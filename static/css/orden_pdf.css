@@ -1,0 +1,102 @@
+/* RESET básico para impresión limpia */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    font-size: 12pt;
+    line-height: 1.4;
+    background: white;
+    padding: 20px;
+
+    /* Para mejorar impresión de colores en navegadores compatibles */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+/* Contenedor general para no exceder A4 */
+@page {
+    size: A4 portrait;
+    margin: 2cm 2cm 2cm 2cm;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid #34495e;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+header h1 {
+    font-size: 24pt;
+    color: #34495e;
+}
+
+header h2 {
+    font-size: 14pt;
+    font-weight: 600;
+    color: #7f8c8d;
+}
+
+header .header-right p {
+    font-size: 11pt;
+    color: #34495e;
+    margin-bottom: 3px;
+}
+
+section {
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 16pt;
+    color: #2980b9;
+    border-bottom: 2px solid #2980b9;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px 12px;
+    border: 1px solid #bdc3c7;
+}
+
+th {
+    background-color: #3498db;
+    color: white;
+    text-align: left;
+}
+
+td {
+    background-color: #ecf0f1;
+}
+
+.descripcion {
+    white-space: pre-wrap;
+    font-style: italic;
+}
+
+footer {
+    border-top: 2px solid #34495e;
+    text-align: center;
+    padding-top: 8px;
+    font-size: 10pt;
+    color: #7f8c8d;
+    position: fixed;
+    bottom: 15px;
+    width: 90%;
+}
+footer p {
+    margin: 0;
+}

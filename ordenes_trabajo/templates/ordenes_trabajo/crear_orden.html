@@ -1,0 +1,288 @@
+{% load static %} {% load form_tags %}
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Crear Nueva Orden</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=2" />
+  </head>
+
+  <body class="bg-light">
+    <div class="container mt-5 mb-5">
+      <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0">Crear Nueva Orden de Trabajo</h3>
+        </div>
+        <div class="card-body">
+          <form method="post" novalidate>
+            {% csrf_token %}
+
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label
+                  for="{{ orden_form.fecha.id_for_label }}"
+                  class="form-label"
+                  >Fecha</label
+                >
+                {{ orden_form.fecha }}
+              </div>
+              <div class="col-md-4 mb-3">
+                <label
+                  for="{{ orden_form.horaInicio.id_for_label }}"
+                  class="form-label"
+                  >Hora de Inicio</label
+                >
+                {{ orden_form.horaInicio }}
+              </div>
+              <div class="col-md-4 mb-3">
+                <label
+                  for="{{ orden_form.horaFin.id_for_label }}"
+                  class="form-label"
+                  >Hora de Fin</label
+                >
+                {{ orden_form.horaFin }}
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label
+                  for="{{ orden_form.tablero.id_for_label }}"
+                  class="form-label"
+                  >Tablero</label
+                >
+                {{ orden_form.tablero }}
+              </div>
+              <div class="col-md-6 mb-3">
+                <label
+                  for="{{ orden_form.circuito.id_for_label }}"
+                  class="form-label"
+                  >Circuito</label
+                >
+                {{ orden_form.circuito }}
+              </div>
+                <div class="col-md-6 mb-3">
+                <label
+                  for="{{ orden_form.vehiculo.id_for_label }}"
+                  class="form-label"
+                  >Vehículo</label
+                >
+                {{ orden_form.vehiculo }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label
+                  for="{{ orden_form.kmInicial.id_for_label }}"
+                  class="form-label"
+                  >Kilometraje Inicial</label
+                >
+                {{ orden_form.kmInicial }}
+              </div>
+              <div class="col-md-4 mb-3">
+                <label
+                  for="{{ orden_form.kmFinal.id_for_label }}"
+                  class="form-label"
+                  >Kilometraje Final</label
+                >
+                {{ orden_form.kmFinal }}
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label
+                for="{{ orden_form.descripcion.id_for_label }}"
+                class="form-label"
+                >Descripción</label
+              >
+              {{ orden_form.descripcion }}
+            </div>
+
+            <hr class="my-4" />
+
+            <h5 class="mb-3">Técnicos</h5>
+            <div id="tecnicos-container"></div>
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm mb-3"
+              id="agregar-tecnico"
+            >
+              + Agregar Técnico
+            </button>
+
+            <hr class="my-4" />
+
+            <h5>Materiales Utilizados</h5>
+            {{ material_formset.management_form }}
+            <div id="material-forms">
+              <tr>
+                <td>{{ form.material }}</td>
+                <td>{{ form.cantidad }}</td>
+                <td><span class="unidad-material"></span></td>
+              </tr>
+
+              {% for form in material_formset %}
+              <div class="row g-2 mb-2 material-form">
+                {% for field in form.visible_fields %}
+                <div class="col">{{ field }}</div>
+                {% endfor %}
+              </div>
+              {% endfor %}
+            </div>
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm"
+              id="add-material"
+            >
+              Agregar Otro Material
+            </button>
+
+            <div style="display: none">
+              <div id="empty-material-form">
+                <div class="row g-2 mb-2">
+                  {% for field in material_formset.empty_form.visible_fields %}
+                  <div class="col">{{ field }}</div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-4" />
+            <button type="submit" class="btn btn-success">Guardar Orden</button>
+            <div class="d-flex gap-3 mt-4">
+              <button
+                type="submit"
+                name="action"
+                value="generar"
+                class="btn btn-primary"
+              >
+                Generar PDF
+              </button>
+              <button
+                type="button"
+                id="btn-descargar-pdf"
+                class="btn btn-secondary"
+              >
+                Descargar PDF
+              </button>
+            </div>
+
+            <a href="{% url 'lista_ordenes' %}" class="btn btn-link mt-3"
+              >Volver a la Lista</a
+            >
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+      // Técnicos dinámicos
+      let contadorTecnicos = 0;
+      document
+        .getElementById("agregar-tecnico")
+        .addEventListener("click", () => {
+          const container = document.getElementById("tecnicos-container");
+
+          const bloque = document.createElement("div");
+          bloque.className = "row g-2 align-items-center mb-2";
+          bloque.innerHTML = `
+          <div class="col-md-5">
+            <input type="text" name="tecnicos[${contadorTecnicos}][nombre]" class="form-control" placeholder="Nombre del técnico" required>
+          </div>
+          <div class="col-md-5">
+            <input type="text" name="tecnicos[${contadorTecnicos}][legajo]" class="form-control" placeholder="Legajo" required>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-danger btn-sm eliminar">Eliminar</button>
+          </div>
+        `;
+          bloque.querySelector(".eliminar").addEventListener("click", () => {
+            bloque.remove();
+          });
+
+          container.appendChild(bloque);
+          contadorTecnicos++;
+        });
+
+      // Materiales dinámicos
+      $(document).ready(function () {
+        $("#add-material").click(function () {
+          const form_idx = $("#id_materialorden_set-TOTAL_FORMS").val();
+          const new_form = $("#empty-material-form")
+            .html()
+            .replace(/__prefix__/g, form_idx);
+          $("#material-forms").append(new_form);
+          $("#id_materialorden_set-TOTAL_FORMS").val(parseInt(form_idx) + 1);
+        });
+      });
+
+      // Descargar PDF por AJAX
+      document
+        .getElementById("btn-descargar-pdf")
+        .addEventListener("click", function () {
+          const form = document.querySelector("form");
+          const formData = new FormData(form);
+          formData.append("action", "descargar");
+
+          fetch(form.action, {
+            method: "POST",
+            body: formData,
+            headers: {
+              "X-Requested-With": "XMLHttpRequest",
+              "X-CSRFToken": "{{ csrf_token }}",
+            },
+          })
+            .then((response) => {
+              if (!response.ok) throw new Error("Error en la descarga");
+              return response.blob();
+            })
+            .then((blob) => {
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = "orden_trabajo.pdf";
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+              window.URL.revokeObjectURL(url);
+            })
+            .catch((e) =>
+              alert("No se pudo descargar el PDF. Intenta de nuevo.")
+            );
+        });
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const materialesSelects = document.querySelectorAll('select[name$="material"]');
+
+        materialesSelects.forEach(select => {
+          const unidadSpan = select.closest('tr').querySelector('.unidad-material');
+
+          // Crear mapa de materiales con unidades (esto puede venir de Django vía JSON)
+          const unidades = {
+            {% for material in materiales %}
+              "{{ material.id }}": "{{ material.unidad }}",
+            {% endfor %}
+          };
+
+          function actualizarUnidad() {
+            const selectedId = select.value;
+            unidadSpan.textContent = unidades[selectedId] || '';
+          }
+
+          select.addEventListener('change', actualizarUnidad);
+          actualizarUnidad();  // inicializa
+        });
+      });
+    </script>
+  </body>
+</html>

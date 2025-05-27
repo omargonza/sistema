@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Orden de Trabajo #{{ orden.pk }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'ordenes_trabajo/css/orden_pdf.css' %}">
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <h1>Orden de Trabajo</h1>
+        <h2>ID: {{ orden.pk }}</h2>
+    </div>
+    <div class="header-right">
+        <p><strong>Fecha:</strong> {{ orden.fecha|date:"d/m/Y" }}</p>
+        <p><strong>Hora Inicio:</strong> {{ orden.hora_inicio|default:"-" }}</p>
+        <p><strong>Hora Fin:</strong> {{ orden.hora_fin|default:"-" }}</p>
+    </div>
+</header>
+
+<section class="datos-generales">
+    <h3>Datos Generales</h3>
+    <table>
+        <tbody>
+            <tr>
+                <th>Vehículo:</th>
+                <td>{{ orden.vehiculo }}</td>
+            </tr>
+            <tr>
+                <th>Kilometraje:</th>
+                <td>{{ orden.kilometraje }}</td>
+            </tr>
+            <tr>
+                <th>Tipo de Mantenimiento:</th>
+                <td>{{ orden.tipo_mantenimiento }}</td>
+            </tr>
+            <tr>
+                <th>Descripción:</th>
+                <td class="descripcion">{{ orden.descripcion|linebreaksbr }}</td>
+            </tr>
+            <tr>
+                <th>Zona / Circuito:</th>
+                <td>{{ orden.zona }} / {{ orden.circuito }}</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="tecnicos">
+    <h3>Técnicos</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Legajo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tecnico in tecnicos %}
+            <tr>
+                <td>{{ tecnico.nombre }}</td>
+                <td>{{ tecnico.legajo }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="2" style="text-align:center;">No hay técnicos asignados</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<section class="materiales">
+    <h3>Materiales Usados</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Material</th>
+                <th>Cantidad</th>
+                <th>Unidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in materiales_usados %}
+            <tr>
+                <td>{{ item.material.nombre }}</td>
+                <td>{{ item.cantidad }}</td>
+                <td>{{ item.unidad }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3" style="text-align:center;">No se usaron materiales</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<footer>
+    <p>© {{ now|date:"Y" }} - Instituto de Mantenimiento Industrial</p>
+</footer>
+
+</body>
+</html>

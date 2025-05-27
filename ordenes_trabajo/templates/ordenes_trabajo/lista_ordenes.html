@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Órdenes de Trabajo</title>
+  <link rel="stylesheet" href="{% static 'css/lista_ordenes.css' %}">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1b1f23;
+      color: #f5f5f5;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #ffffff;
+    }
+
+    .container {
+      background-color: #2c3e50;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    #tabla-ordenes {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    #tabla-ordenes thead {
+      background-color: #34495e;
+      color: #ecf0f1;
+    }
+
+    #tabla-ordenes tbody tr:hover {
+      background-color: #3e5871;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+      background-color: #ecf0f1;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 5px 10px;
+      color: #000;
+    }
+
+    .dt-button, .custom-create-btn {
+      background-color: #2a9d8f;
+      color: white !important;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 500;
+      margin-right: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      text-decoration: none;
+    }
+
+    .dt-button:hover, .custom-create-btn:hover {
+      background-color: #21867a;
+      transform: translateY(-2px);
+    }
+
+    a {
+      color: #1abc9c;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Órdenes de Trabajo</h1>
+
+    <table id="tabla-ordenes" class="display nowrap">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Tablero</th>
+          <th>Circuito</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for orden in ordenes %}
+        <tr>
+          <td>{{ orden.fecha }}</td>
+          <td>{{ orden.tablero }}</td>
+          <td>{{ orden.circuito }}</td>
+          <td>
+            <a href="{% url 'detalle_orden' orden.pk %}">Ver</a> |
+            <a href="{% url 'generar_pdf_orden' orden.pk %}">PDF</a>
+            {% if request.user.is_superuser %}
+              | <a href="{% url 'editar_orden' orden.pk %}">Editar</a>
+              | <a href="{% url 'eliminar_orden' orden.pk %}">Eliminar</a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      const table = $('#tabla-ordenes').DataTable({
+        dom: 'Bfrtip',
+        buttons: ['excelHtml5', 'csvHtml5'],
+        language: {
+          search: "Buscar por tablero, fecha o circuito:",
+          lengthMenu: "Mostrar _MENU_ órdenes",
+          zeroRecords: "No se encontraron resultados",
+          info: "Mostrando _START_ a _END_ de _TOTAL_ órdenes",
+          infoEmpty: "No hay órdenes disponibles",
+          infoFiltered: "(filtrado de _MAX_ órdenes totales)",
+          paginate: {
+            next: "Siguiente",
+            previous: "Anterior"
+          }
+        }
+      });
+
+      // Botón crear orden agregado dinámicamente
+      $(".dt-buttons").append(`
+        <a href="{% url 'crear_orden' %}" class="custom-create-btn">➕ Crear Orden</a>
+      `);
+    });
+  </script>
+</body>
+</html>

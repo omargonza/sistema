@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Orden de Trabajo #{{ orden.pk }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            margin: 40px;
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #aaa;
+            padding: 6px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .firma {
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Orden de Trabajo Nº {{ orden.pk }}</h1>
+
+    <div class="section">
+        <h2>Datos Generales</h2>
+        <p><strong>Fecha:</strong> {{ orden.fecha }}</p>
+        <p><strong>Hora de inicio:</strong> {{ orden.horaInicio }} &nbsp;&nbsp;</p>
+        <p><strong>Hora de fin:</strong> {{ orden.horaFin }}</p>
+        <p><strong>Vehículo:</strong> {{ orden.vehiculo }}</p>
+        <p><strong>Kilometraje inicial:</strong> {{ orden.kmInicial }} </p>
+        <p><strong>Kilometraje final:</strong> {{ orden.kmFinal }} </p>
+        <p><strong>Tablero:</strong> {{ orden.tablero }}</p>
+        <p><strong>Descripción:</strong> {{ orden.descripcion }}</p>
+        <p><strong>Zona:</strong> {{ orden.zona }} &nbsp;&nbsp;</p>
+        <p><strong>Circuito:</strong> {{ orden.circuito }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Descripción de la Tarea</h2>
+        <p>{{ orden.descripcion }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Técnicos Intervinientes</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Legajo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tecnico in tecnicos %}
+                <tr>
+                    <td>{{ tecnico.nombre }}</td>
+                    <td>{{ tecnico.legajo }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2">No se ingresaron técnicos.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Materiales Utilizados</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Unidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for material in materiales_usados %}
+                <tr>
+                    <td>{{ material.material.nombre }}</td>
+                    <td>{{ material.cantidad }}</td>
+                    <td>{{ material.material.unidad }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No se registraron materiales.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
