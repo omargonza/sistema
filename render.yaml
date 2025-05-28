@@ -6,7 +6,7 @@ services:
     startCommand: "gunicorn sistema_ordenes.wsgi:application"
     envVars:
       - key: DJANGO_SETTINGS_MODULE
-        value: sistema_ordenes.settings
+        value: sistema_ordenes.settings.prod
       - key: PYTHON_VERSION
         value: 3.10
       - key: 'django-insecure-3c2sjisamr3s88@=6b$7(@z7#%_$uoiw#2$*+%h@9!19pupon0'
