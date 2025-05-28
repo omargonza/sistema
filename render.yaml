@@ -9,7 +9,9 @@ services:
         value: sistema_ordenes.settings.prod
       - key: PYTHON_VERSION
         value: 3.10
-      - key: 'django-insecure-3c2sjisamr3s88@=6b$7(@z7#%_$uoiw#2$*+%h@9!19pupon0'
-        value: 'django-insecure-3c2sjisamr3s88@=6b$7(@z7#%_$uoiw#2$*+%h@9!19pupon0'
+      - key: SECRET_KEY
+        value: django-insecure-3c2sjisamr3s88@=6b$7(@z7#%_$uoiw#2$*+%h@9!19pupon0
       - key: ALLOWED_HOSTS
         value: sistema-ordenes.onrender.com
+      - key: DATABASE_URL
+        value: <URL DE TU DATABASE DE RENDER>
