@@ -1,12 +1,16 @@
-import dj_database_url
+from .base import *
+from dj_database_url import parse as db_url
 from decouple import config
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DEBUG = config('DJANGO_DEBUG', default=False, cast=bool)
 
-DEBUG = False
+ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
 
-ALLOWED_HOSTS = ['*']  # O tu dominio de Render
+# Configuración base de datos usando DATABASE_URL
+DATABASES = {
+    'default': db_url(config('DATABASE_URL'))
+}
 
 # Seguridad para producción
 SECURE_SSL_REDIRECT = True
@@ -16,18 +20,6 @@ SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
-# Archivos estáticos
+# Archivos estáticos para producción
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
-MIDDLEWARE = [
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    # (el resto de tus middlewares...)
-]
-
-# Configuración de base de datos con dj-database-url
-DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL')  # Render te da esta variable automáticamente
-    )
-}

@@ -3,20 +3,15 @@
 import os
 import sys
 
-
 def main():
-    """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sistema_ordenes.settings.prod')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', os.getenv('DJANGO_SETTINGS_MODULE', 'sistema_ordenes.settings.dev'))
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
         raise ImportError(
-            "No se pudo importar Django. "
-            "¿Estás seguro de que está instalado y disponible en la variable de entorno PYTHONPATH? "
-            "¿Olvidaste activar un entorno virtual?"
+            "No se pudo importar Django. ¿Está instalado y en tu entorno virtual?"
         ) from exc
     execute_from_command_line(sys.argv)
-
 
 if __name__ == '__main__':
     main()

@@ -10,7 +10,7 @@ urlpatterns = [
     path('', RedirectView.as_view(pattern_name='login', permanent=False), name='home'), # <-- ¡Añade esta línea!
     # 'permanent=False' significa que es una redirección temporal (302), útil durante el desarrollo.
     # 'pattern_name='login'' usa el nombre de tu URL para el login.
-    path('admin/', admin.site.urls),
+ 
     path('ordenes/lista/', views.lista_ordenes, name='lista_ordenes'),
     path('ordenes/nueva/', views.crear_orden, name='crear_orden'),
      # Y la nueva URL para generar PDF:
