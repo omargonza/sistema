@@ -66,14 +66,17 @@ def crear_orden(request):
             nombres = request.POST.getlist('tecnico_nombre[]')
             legajos = request.POST.getlist('tecnico_legajo[]')
 
-            tecnicos = []
+            lista_tecnicos = [] # Cambié el nombre de la variable para evitar confusión
             for nombre, legajo in zip(nombres, legajos):
                 if nombre.strip() != '' or legajo.strip() != '':
-                    tecnicos.append({'nombre': nombre.strip(), 'legajo': legajo.strip()})
+                    lista_tecnicos.append({'nombre': nombre.strip(), 'legajo': legajo.strip()})
 
-            # Guardar técnicos en el modelo (asumiendo JSONField)
-            orden.tecnicos = tecnicos
-            orden.save()
+            # --- CAMBIO CRÍTICO AQUÍ ---
+            # ¡Serializar la lista de Python a una cadena JSON antes de guardar!
+            orden.tecnicos = json.dumps(lista_tecnicos)
+            # --- FIN DEL CAMBIO CRÍTICO ---
+
+            orden.save() # Ahora guarda la cadena JSON
 
             # Guardar materiales relacionados
             materiales = material_formset.save(commit=False)
@@ -82,10 +85,14 @@ def crear_orden(request):
                 material.save()
             material_formset.save_m2m()
 
+            # Asegúrate de que el contexto para el PDF use el método que devuelve JSON parseado
+            # (get_tecnicos_json() o get_tecnicos_como_texto())
             context = {
                 'orden': orden,
                 'materiales_usados': orden.materiales_usados.all(),
-                'tecnicos': orden.get_tecnicos_json(),
+                'tecnicos': orden.get_tecnicos_json(), # Esto debería funcionar ahora
+                # O si quieres el texto formateado directamente:
+                # 'tecnicos_texto': orden.get_tecnicos_como_texto(),
             }
 
             template_path = 'ordenes_trabajo/orden_pdf_template.html'
@@ -129,6 +136,7 @@ def crear_orden(request):
             'unidades': unidades,
         }
         return render(request, 'ordenes_trabajo/crear_orden.html', context)
+
 
 
 @login_required
