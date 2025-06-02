@@ -20,9 +20,9 @@ from .forms import OrdenTrabajoForm, MaterialOrdenFormSet
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
+import logging
 
-
-
+logger = logging.getLogger(__name__)
 
 def login_view(request):
     if request.method == 'POST':
@@ -58,6 +58,13 @@ def crear_orden(request):
         orden_form = OrdenTrabajoForm(request.POST)
         material_formset = MaterialOrdenFormSet(request.POST)
         action = request.POST.get('action')
+        
+         # --- AÑADE ESTOS LOGS PARA DEPURAR ---
+        logger.info("--- DEBUGGING TECNICOS ---")
+        logger.info(f"request.POST: {request.POST}")
+        logger.info(f"nombres raw: {request.POST.getlist('tecnico_nombre[]')}")
+        logger.info(f"legajos raw: {request.POST.getlist('tecnico_legajo[]')}")
+        # --- FIN DE LOS LOGS DE DEPURACION ---
 
         if orden_form.is_valid() and material_formset.is_valid():
             orden = orden_form.save(commit=False)
