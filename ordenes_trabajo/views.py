@@ -58,12 +58,22 @@ def crear_orden(request):
         orden_form = OrdenTrabajoForm(request.POST)
         material_formset = MaterialOrdenFormSet(request.POST)
         action = request.POST.get('action')
-        
-         # --- AÑADE ESTOS LOGS PARA DEPURAR ---
+
+        # --- AÑADE ESTOS LOGS PARA DEPURAR ---
         logger.info("--- DEBUGGING TECNICOS ---")
         logger.info(f"request.POST: {request.POST}")
         logger.info(f"nombres raw: {request.POST.getlist('tecnico_nombre[]')}")
         logger.info(f"legajos raw: {request.POST.getlist('tecnico_legajo[]')}")
+        nombres = request.POST.getlist('tecnico_nombre[]')
+        legajos = request.POST.getlist('tecnico_legajo[]')
+
+        lista_tecnicos = []
+        for nombre, legajo in zip(nombres, legajos):
+            logger.info(f"Procesando en bucle: nombre='{nombre.strip()}', legajo='{legajo.strip()}'")
+            if nombre.strip() != '' or legajo.strip() != '':
+                lista_tecnicos.append({'nombre': nombre.strip(), 'legajo': legajo.strip()})
+
+        logger.info(f"Lista de tecnicos construida (antes de dumps): {lista_tecnicos}")
         # --- FIN DE LOS LOGS DE DEPURACION ---
 
         if orden_form.is_valid() and material_formset.is_valid():
