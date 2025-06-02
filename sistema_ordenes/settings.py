@@ -140,8 +140,8 @@ from django.contrib.auth import get_user_model
 
 if os.environ.get('CREATE_SUPERUSER', 'false') == 'true':
     User = get_user_model()
-    username = os.environ.get('DJANGO_SUPERUSER_USERNAME', 'admin')
-    email = os.environ.get('DJANGO_SUPERUSER_EMAIL', 'admin@example.com')
+    username = os.environ.get('DJANGO_SUPERUSER_USERNAME', 'Gonza')
+    email = os.environ.get('DJANGO_SUPERUSER_EMAIL', 'aplicacionesgonza@gmail.com')
     password = os.environ.get('DJANGO_SUPERUSER_PASSWORD', 'admin123')
 
     if not User.objects.filter(username=username).exists():
