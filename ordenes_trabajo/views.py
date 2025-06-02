@@ -111,7 +111,8 @@ def crear_orden(request):
                 # O si quieres el texto formateado directamente:
                 # 'tecnicos_texto': orden.get_tecnicos_como_texto(),
             }
-
+    # Asegúrate de que el contexto para el PDF use el método que devuelve JSON parseado
+            # (get_tecnicos_json() o get_tecnicos_como_texto())
             template_path = 'ordenes_trabajo/orden_pdf_template.html'
             template = get_template(template_path)
             html = template.render(context)
