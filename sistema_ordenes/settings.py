@@ -133,3 +133,19 @@ LOGOUT_REDIRECT_URL = '/accounts/login/' # URL a la que quieres redirigir despu�
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+import os
+from django.contrib.auth import get_user_model
+
+if os.environ.get('CREATE_SUPERUSER', 'false') == 'true':
+    User = get_user_model()
+    username = os.environ.get('DJANGO_SUPERUSER_USERNAME', 'admin')
+    email = os.environ.get('DJANGO_SUPERUSER_EMAIL', 'admin@example.com')
+    password = os.environ.get('DJANGO_SUPERUSER_PASSWORD', 'admin123')
+
+    if not User.objects.filter(username=username).exists():
+        User.objects.create_superuser(username=username, email=email, password=password)
+        print("✅ Superusuario creado automáticamente.")
+    else:
+        print("ℹ️ El superusuario ya existe.")
