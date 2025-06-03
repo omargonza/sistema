@@ -1,74 +1,86 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Detalle de la Orden de Trabajo</title>
     {% load static %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Detalle de la Orden de Trabajo">
-    <link rel="stylesheet" href="{% static 'css/detalle.css' %}">
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Detalle de la Orden de Trabajo" />
+      <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'css/detalle.css' %}" />
+  </head>
+  <body>
     <div class="container">
-        <h1>Detalle de la Orden de Trabajo</h1>
+      <h1>Detalle de la Orden de Trabajo</h1>
 
-        <p><strong>Fecha:</strong> {{ orden.fecha }}</p>
-        <p><strong>Hora de Inicio:</strong> {{ orden.horaInicio }}</p>
-        {% if orden.horaFin %}
-            <p><strong>Hora de Fin:</strong> {{ orden.horaFin }}</p>
-        {% endif %}
-        {% if orden.vehiculo %}
-            <p><strong>Vehículo:</strong> {{ orden.vehiculo }}</p>
-        {% endif %}
-        {% if orden.kmInicial %}
-            <p><strong>Kilometraje Inicial:</strong> {{ orden.kmInicial }}</p>
-        {% endif %}
-        {% if orden.kmFinal %}
-            <p><strong>Kilometraje Final:</strong> {{ orden.kmFinal }}</p>
-        {% endif %}
-        <p><strong>Descripción:</strong> {{ orden.descripcion }}</p>
-        {% if orden.tablero %}
-            <p><strong>Tablero:</strong> {{ orden.tablero }}</p>
-        {% endif %}
-        <p><strong>Zona:</strong> {{ orden.zona }}</p>
-        {% if orden.circuito %}
-            <p><strong>Circuito:</strong> {{ orden.circuito }}</p>
-        {% endif %}
+      <p><strong>Fecha:</strong> {{ orden.fecha }}</p>
+      <p><strong>Hora de Inicio:</strong> {{ orden.horaInicio }}</p>
+      {% if orden.horaFin %}
+      <p><strong>Hora de Fin:</strong> {{ orden.horaFin }}</p>
+      {% endif %} {% if orden.vehiculo %}
+      <p><strong>Vehículo:</strong> {{ orden.vehiculo }}</p>
+      {% endif %} {% if orden.kmInicial %}
+      <p><strong>Kilometraje Inicial:</strong> {{ orden.kmInicial }}</p>
+      {% endif %} {% if orden.kmFinal %}
+      <p><strong>Kilometraje Final:</strong> {{ orden.kmFinal }}</p>
+      {% endif %}
+      <p><strong>Descripción:</strong> {{ orden.descripcion }}</p>
+      {% if orden.tablero %}
+      <p><strong>Tablero:</strong> {{ orden.tablero }}</p>
+      {% endif %}
+      <p><strong>Zona:</strong> {{ orden.zona }}</p>
+      {% if orden.circuito %}
+      <p><strong>Circuito:</strong> {{ orden.circuito }}</p>
+      {% endif %}
 
-        <h2>Técnicos Asignados</h2>
-        {% with tecnicos=orden.get_tecnicos_json %}
-            {% if tecnicos %}
-                <table class="tabla-tecnicos">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Legajo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for tecnico in tecnicos %}
-                            <tr>
-                                <td>{{ tecnico.nombre }}</td>
-                                <td>{{ tecnico.legajo }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <p>No se asignaron técnicos.</p>
-            {% endif %}
-        {% endwith %}
+      <h2>Técnicos Asignados</h2>
+      {% with tecnicos=orden.get_tecnicos_json %} {% if tecnicos %}
+      <table class="tabla-tecnicos">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Legajo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tecnico in tecnicos %}
+          <tr>
+            <td>{{ tecnico.nombre }}</td>
+            <td>{{ tecnico.legajo }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>No se asignaron técnicos.</p>
+      {% endif %} {% endwith %} {% if orden.materiales %}
+      <p><strong>Materiales:</strong> {{ orden.materiales }}</p>
+      {% endif %}
 
-        {% if orden.materiales %}
-            <p><strong>Materiales:</strong> {{ orden.materiales }}</p>
-        {% endif %}
+      <div class="acciones mt-4 d-flex gap-2 flex-wrap">
+        <a
+          href="{% url 'editar_orden' orden.pk %}"
+          class="btn btn-outline-secondary"
+        >
+          ✏️ Editar Orden de Trabajo
+        </a>
 
-        <div class="acciones">
-            <a href="{% url 'editar_orden' orden.pk %}" class="btn">Editar Orden de Trabajo</a>
-            <a href="{% url 'lista_ordenes' %}" class="btn">Volver a la Lista</a>
-            <a href="{% url 'generar_pdf_orden' pk=orden.pk %}" class="btn btn-primary" target="_blank">Generar PDF</a>
+        <a href="{% url 'lista_ordenes' %}" class="btn btn-outline-dark">
+          ← Volver a la Lista
+        </a>
 
-        </div>
+        <a
+          href="{% url 'generar_pdf_orden' pk=orden.pk %}"
+          class="btn btn-primary"
+          target="_blank"
+        >
+          📄 Generar PDF
+        </a>
+      </div>
     </div>
-</body>
+  </body>
 </html>
