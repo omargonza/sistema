@@ -3,106 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Orden de Trabajo #{{ orden.pk }}</title>
-    <style>
-        /* Estilos Generales */
-        body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Fuente moderna */
-            font-size: 11px; /* Un poco más pequeño para más contenido */
-            margin: 30px; /* Márgenes un poco reducidos */
-            color: #333; /* Texto más suave */
-            line-height: 1.6; /* Mayor legibilidad */
-        }
-
-        h1 {
-            color: #2c3e50; /* Azul oscuro corporativo */
-            font-size: 24px;
-            text-align: center;
-            margin-bottom: 25px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #3498db; /* Línea azul vibrante */
-        }
-
-        h2 {
-            color: #34495e; /* Azul grisáceo */
-            font-size: 16px;
-            margin-top: 25px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 5px;
-            text-transform: uppercase; /* Mayúsculas para los títulos de sección */
-        }
-
-        .section {
-            margin-bottom: 20px;
-            padding: 10px;
-            background-color: #f9f9f9; /* Fondo suave para las secciones */
-            border-radius: 5px; /* Bordes ligeramente redondeados */
-            border: 1px solid #eee; /* Borde sutil */
-        }
-
-        /* Estilos de Párrafos de Datos */
-        .section p {
-            margin-bottom: 5px; /* Espacio reducido entre párrafos de datos */
-            display: inline-block; /* Para que los elementos p se alineen en fila si hay espacio */
-            width: 48%; /* Ancho para dos columnas de datos */
-            vertical-align: top;
-        }
-        .section p strong {
-            color: #555; /* Negritas ligeramente más oscuras */
-            min-width: 120px; /* Asegura un ancho mínimo para las etiquetas */
-            display: inline-block;
-        }
-
-        /* Estilos de Tabla */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.05); /* Sombra sutil para la tabla */
-        }
-
-        th, td {
-            border: 1px solid #ddd; /* Bordes más suaves */
-            padding: 8px 12px; /* Mayor padding */
-            text-align: left;
-        }
-
-        th {
-            background-color: #e9eff4; /* Fondo azul claro para encabezados */
-            color: #333;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 10px;
-        }
-
-        tr:nth-child(even) {
-            background-color: #fcfcfc; /* Rayado suave para filas pares */
-        }
-
-        /* Firmas (si las agregas en el HTML) */
-        .firma-section {
-            margin-top: 40px;
-            display: flex; /* Para alinear horizontalmente si hay varias firmas */
-            justify-content: space-around;
-            width: 100%;
-        }
-
-        .firma-box {
-            text-align: center;
-            width: 45%; /* Ancho para dos firmas */
-            border-top: 1px dashed #999; /* Línea para la firma */
-            padding-top: 10px;
-            margin-top: 30px;
-            font-size: 10px;
-            color: #666;
-        }
-        .firma-box p {
-            margin: 0;
-            padding: 0;
-            display: block; /* Asegura que no intente ser inline-block */
-            width: 100%;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+      <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'css/orden_pdf.css' %}?v=2" />
 </head>
 <body>
 
