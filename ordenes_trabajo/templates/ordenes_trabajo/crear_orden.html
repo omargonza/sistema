@@ -188,10 +188,14 @@
                 Descargar PDF
               </button>
             </div>
-
-            <a href="{% url 'lista_ordenes' %}" class="btn btn-link mt-2"
-              >Volver a la Lista</a
-            >
+<a href="{% url 'lista_ordenes' %}" class="btn btn-outline-secondary mt-3">
+  ← Volver a la Lista
+</a>
+            <input
+              type="hidden"
+              name="action"
+              value="crear"
+            />
           </form>
         </div>
       </div>
