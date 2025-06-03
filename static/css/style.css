@@ -1,34 +1,61 @@
-/* Estilo base */
+/* === Fondo general y fuente === */
 body {
-  background-color: #f8f9fa;
+  background: linear-gradient(to right top, #e0eafc, #cfdef3);
+  min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 15px;
+  margin: 0;
 }
 
-/* Card del formulario */
+/* === Tarjeta principal === */
 .card {
-  border-radius: 16px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
-/* Cabecera con color primario */
-.card-header.bg-primary {
-  background-color: #0056b3 !important;
+/* === Encabezado === */
+.card-header {
+  background: #0d6efd !important; /* Bootstrap primary */
+  color: white !important;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #dee2e6;
 }
 
-/* Sombras suaves */
-.shadow-lg {
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+.card-header h3 {
+  margin-bottom: 0;
 }
 
-/* Botones personalizados */
+/* === Botones === */
+.btn {
+  border-radius: 8px;
+  padding: 0.4rem 1.2rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-success {
+  background-color: #198754;
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: #146c43;
+}
+
 .btn-outline-primary {
-  border-color: #0056b3;
-  color: #0056b3;
+  border-color: #0d6efd;
+  color: #0d6efd;
 }
 
 .btn-outline-primary:hover {
-  background-color: #0056b3;
+  background-color: #0d6efd;
   color: white;
+}
+
+.btn-outline-secondary {
+  border-color: #6c757d;
+  color: #6c757d;
 }
 
 .btn-outline-secondary:hover {
@@ -36,34 +63,79 @@ body {
   color: white;
 }
 
-/* Ajustes para inputs y selects */
+.btn-primary {
+  background-color: #0d6efd;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+}
+
+/* === Inputs y labels === */
+.form-label {
+  font-weight: 500;
+}
+
 input.form-control,
 select.form-control,
 textarea.form-control {
-  border-radius: 8px;
+  border-radius: 6px;
+  box-shadow: none;
+  border: 1px solid #ced4da;
 }
 
-/* Responsive: Evita desbordes */
+textarea.form-control {
+  resize: vertical;
+}
+
+/* === Materiales dinámicos === */
+#material-forms .row,
+#empty-material-form .row {
+  gap: 0.5rem;
+}
+
+/* === Técnicos dinámicos === */
+#tecnicos-container .row {
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* === Responsive spacing === */
 @media (max-width: 576px) {
+  .card-header,
+  .card-body {
+    padding: 1rem;
+  }
+
+  h3,
+  h5 {
+    font-size: 1.25rem;
+  }
+
   .btn {
     width: 100%;
+    margin-bottom: 0.5rem;
   }
 
-  .d-md-flex {
-    flex-direction: column !important;
-  }
-
-  .justify-content-md-start {
-    justify-content: center !important;
+  .d-flex.gap-3 {
+    flex-direction: column;
   }
 }
 
-/* Técnicos y Materiales */
-.material-form input,
-.material-form select {
-  width: 100%;
+/* === Tabla de materiales - para PDF o diseño consistente === */
+.unidad-material {
+  display: inline-block;
+  min-width: 40px;
 }
 
-#tecnicos-container .form-control {
-  margin-bottom: 0.5rem;
+/* === Enlace Volver === */
+a.btn-link {
+  color: #0d6efd;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a.btn-link:hover {
+  text-decoration: underline;
 }
