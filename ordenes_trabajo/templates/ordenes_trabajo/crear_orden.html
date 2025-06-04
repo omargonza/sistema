@@ -34,7 +34,11 @@
         </div>
         <div class="card-body">
         ...
-<form method="post" novalidate action="{% url 'crear_orden' %}">
+<form method="post" enctype="multipart/form-data" action="{% url 'crear_orden' %}" id="form-orden">
+  {% csrf_token %}
+  <!-- ...campos... -->
+          {% include 'ordenes_trabajo/includes/alertas.html' %}
+          {% include 'ordenes_trabajo/includes/errores.html' %}
             <h4 class="mb-3">Datos de la Orden</h4>
           
             {% csrf_token %}
@@ -194,11 +198,7 @@
 <a href="{% url 'lista_ordenes' %}" class="btn btn-outline-secondary mt-3">
   ← Volver a la Lista
 </a>
-            <input
-              type="hidden"
-              name="action"
-              value="crear"
-            />
+          
           </form>
         </div>
       </div>
