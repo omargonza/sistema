@@ -14,7 +14,7 @@ from xhtml2pdf import pisa
 import json
 
 # Importaciones de tus modelos y formularios
-from .models import OrdenTrabajo, Material, MaterialOrden
+from .models import OrdenTrabajo, Material
 from .forms import OrdenTrabajoForm, MaterialOrdenFormSet
 # ====================================================================
 from django.contrib.auth.forms import UserCreationForm
@@ -177,19 +177,19 @@ def detalle_orden(request, pk):
 
 
 @login_required
-def editar_orden(request, pk):
+def editar_orden(_, pk):
     orden = get_object_or_404(OrdenTrabajo, pk=pk)
     return HttpResponse(f"Aquí se mostrará el formulario para editar la orden de trabajo con ID: {orden.pk}")
 
 
 @login_required
-def eliminar_orden(request, pk):
+def eliminar_orden(_, pk):
     orden = get_object_or_404(OrdenTrabajo, pk=pk)
     return HttpResponse(f"Aquí se confirmará la eliminación de la orden de trabajo con ID: {orden.pk}")
 
 
 @login_required
-def generar_pdf_orden(request, pk):
+def generar_pdf_orden(_, pk):
     """
     Genera un PDF para una orden de trabajo específica.
     Recibe el 'pk' (clave primaria) de la Orden de Trabajo como parámetro.

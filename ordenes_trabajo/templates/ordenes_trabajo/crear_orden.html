@@ -39,8 +39,6 @@
   <!-- ...campos... -->
      
             <h4 class="mb-3">Datos de la Orden</h4>
-          
-            {% csrf_token %}
 
             <div class="row gy-3">
               <div class="col-12 col-md-4">
@@ -151,13 +149,18 @@
             <div id="material-forms">
               {% for form in material_formset %}
               <div class="row g-2 mb-2 material-form">
+              {% for form in material_formset %}
+              <div class="row g-2 mb-2 material-form">
                 {% for field in form.visible_fields %}
-                <div class="col">{{ field }}</div>
+                <div class="col">
+                  {{ field }}
+                  {% if field.name == "material" %}
+                    <span class="unidad-material"></span>
+                  {% endif %}
+                </div>
                 {% endfor %}
               </div>
               {% endfor %}
-            </div>
-            <button
               type="button"
               class="btn btn-outline-secondary btn-sm"
               id="add-material"
@@ -165,9 +168,14 @@
               Agregar Otro Material
             </button>
 
-            <div style="display: none">
-              <div id="empty-material-form">
-                <div class="row g-2 mb-2">
+                  {% for field in material_formset.empty_form.visible_fields %}
+                  <div class="col">
+                    {{ field }}
+                    {% if field.name == "material" %}
+                      <span class="unidad-material"></span>
+                    {% endif %}
+                  </div>
+                  {% endfor %}
                   {% for field in material_formset.empty_form.visible_fields %}
                   <div class="col">{{ field }}</div>
                   {% endfor %}
@@ -275,30 +283,33 @@
               a.download = "orden_trabajo.pdf";
               document.body.appendChild(a);
               a.click();
-              a.remove();
-              window.URL.revokeObjectURL(url);
-            })
-            .catch((e) =>
-              alert("No se pudo descargar el PDF. Intenta de nuevo.")
-            );
-        });
-    </script>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         const materialesSelects = document.querySelectorAll('select[name$="material"]');
 
-        materialesSelects.forEach(select => {
-          const unidadSpan = select.closest('tr').querySelector('.unidad-material');
+        // Crear mapa de materiales con unidades (esto puede venir de Django vía JSON)
+        const unidades = {
+          {% for material in materiales %}
+            "{{ material.id }}": "{{ material.unidad }}",
+          {% endfor %}
+        };
 
-          // Crear mapa de materiales con unidades (esto puede venir de Django vía JSON)
-          const unidades = {
-            {% for material in materiales %}
-              "{{ material.id }}": "{{ material.unidad }}",
-            {% endfor %}
-          };
+        materialesSelects.forEach(select => {
+          // Busca el span .unidad-material dentro del mismo .col
+          const unidadSpan = select.parentElement.querySelector('.unidad-material');
 
           function actualizarUnidad() {
             const selectedId = select.value;
+            if (unidadSpan) {
+              unidadSpan.textContent = unidades[selectedId] || '';
+            }
+          }
+
+          select.addEventListener('change', actualizarUnidad);
+          actualizarUnidad();  // inicializa
+        });
+      });
+    </script>
             unidadSpan.textContent = unidades[selectedId] || '';
           }
 
