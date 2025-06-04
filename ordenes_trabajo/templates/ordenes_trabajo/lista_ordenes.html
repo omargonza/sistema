@@ -76,6 +76,24 @@
     a:hover {
       text-decoration: underline;
     }
+
+    .custom-create-btn {
+  background-color: #007bff;
+  color: white !important;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 14px;
+  margin-left: 10px;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.2s ease;
+}
+
+.custom-create-btn:hover {
+  background-color: #0056b3;
+}
+
   </style>
 </head>
 <body>
@@ -118,30 +136,37 @@
   <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
-  <script>
-    $(document).ready(function () {
-      const table = $('#tabla-ordenes').DataTable({
-        dom: 'Bfrtip',
-        buttons: ['excelHtml5', 'csvHtml5'],
-        language: {
-          search: "Buscar por tablero, fecha o circuito:",
-          lengthMenu: "Mostrar _MENU_ órdenes",
-          zeroRecords: "No se encontraron resultados",
-          info: "Mostrando _START_ a _END_ de _TOTAL_ órdenes",
-          infoEmpty: "No hay órdenes disponibles",
-          infoFiltered: "(filtrado de _MAX_ órdenes totales)",
-          paginate: {
-            next: "Siguiente",
-            previous: "Anterior"
-          }
-        }
-      });
+  <!-- Guardar la URL de Django en una variable JS -->
+<script>
+  const crearOrdenUrl = "{% url 'crear_orden' %}";
+</script>
 
-      // Botón crear orden agregado dinámicamente
-      $(".dt-buttons").append(`
-        <a href="{% url 'crear_orden' %}" class="custom-create-btn">➕ Crear Orden</a>
-      `);
+<!-- Script de DataTables + botón crear orden -->
+<script>
+  $(document).ready(function () {
+    const table = $('#tabla-ordenes').DataTable({
+      dom: 'Bfrtip',
+      buttons: ['excelHtml5', 'csvHtml5'],
+      language: {
+        search: "Buscar por tablero, fecha o circuito:",
+        lengthMenu: "Mostrar _MENU_ órdenes",
+        zeroRecords: "No se encontraron resultados",
+        info: "Mostrando _START_ a _END_ de _TOTAL_ órdenes",
+        infoEmpty: "No hay órdenes disponibles",
+        infoFiltered: "(filtrado de _MAX_ órdenes totales)",
+        paginate: {
+          next: "Siguiente",
+          previous: "Anterior"
+        }
+      }
     });
-  </script>
+
+    // Botón crear orden agregado dinámicamente
+    $(".dt-buttons").append(`
+      <a href="${crearOrdenUrl}" class="custom-create-btn">➕ Crear Orden</a>
+    `);
+  });
+</script>
+
 </body>
 </html>
