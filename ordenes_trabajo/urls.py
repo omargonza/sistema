@@ -6,8 +6,8 @@ from django.views.generic.base import RedirectView # <-- ¡Importa esto!
 
 
 urlpatterns = [
-    # Redirecciona la raíz '/' a la página de login
-    path('', RedirectView.as_view(pattern_name='login', permanent=False), name='home'), # <-- ¡Añade esta línea!
+    # Redirecciona la raíz '/' a la página de registro
+    path('', RedirectView.as_view(pattern_name='registro', permanent=False), name='home'), # <-- ¡Añade esta línea!
     # 'permanent=False' significa que es una redirección temporal (302), útil durante el desarrollo.
     # 'pattern_name='login'' usa el nombre de tu URL para el login.
  
