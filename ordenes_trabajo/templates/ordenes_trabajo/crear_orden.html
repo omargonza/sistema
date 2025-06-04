@@ -33,12 +33,11 @@
           <h3 class="mb-0">Crear Nueva Orden de Trabajo</h3>
         </div>
         <div class="card-body">
-        ...
+        
 <form method="post" enctype="multipart/form-data" action="{% url 'crear_orden' %}" id="form-orden">
   {% csrf_token %}
   <!-- ...campos... -->
-          {% include 'ordenes_trabajo/includes/alertas.html' %}
-          {% include 'ordenes_trabajo/includes/errores.html' %}
+     
             <h4 class="mb-3">Datos de la Orden</h4>
           
             {% csrf_token %}
