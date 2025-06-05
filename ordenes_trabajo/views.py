@@ -52,6 +52,7 @@ def registro(request):
         form = UserCreationForm()
     return render(request, 'ordenes_trabajo/registro.html', {'form': form})
 
+
 @login_required
 def crear_orden(request):
     if request.method == 'POST':
@@ -59,64 +60,45 @@ def crear_orden(request):
         material_formset = MaterialOrdenFormSet(request.POST)
         action = request.POST.get('action')
 
-        # --- AÑADE ESTOS LOGS PARA DEPURAR ---
-        logger.info("--- DEBUGGING TECNICOS ---")
-        logger.info(f"request.POST: {request.POST}")
-        logger.info(f"nombres raw: {request.POST.getlist('tecnico_nombre[]')}")
-        logger.info(f"legajos raw: {request.POST.getlist('tecnico_legajo[]')}")
+        # Capturar técnicos
         nombres = request.POST.getlist('tecnico_nombre[]')
         legajos = request.POST.getlist('tecnico_legajo[]')
-
-        lista_tecnicos = []
-        for nombre, legajo in zip(nombres, legajos):
-            logger.info(f"Procesando en bucle: nombre='{nombre.strip()}', legajo='{legajo.strip()}'")
-            if nombre.strip() != '' or legajo.strip() != '':
-                lista_tecnicos.append({'nombre': nombre.strip(), 'legajo': legajo.strip()})
-
-        logger.info(f"Lista de tecnicos construida (antes de dumps): {lista_tecnicos}")
-        # --- FIN DE LOS LOGS DE DEPURACION ---
+        lista_tecnicos = [
+            {'nombre': nombre.strip(), 'legajo': legajo.strip()}
+            for nombre, legajo in zip(nombres, legajos)
+            if nombre.strip() or legajo.strip()
+        ]
 
         if orden_form.is_valid() and material_formset.is_valid():
             orden = orden_form.save(commit=False)
-
-            # Capturar técnicos enviados desde el formulario (listas)
-            nombres = request.POST.getlist('tecnico_nombre[]')
-            legajos = request.POST.getlist('tecnico_legajo[]')
-
-            lista_tecnicos = [] # Cambié el nombre de la variable para evitar confusión
-            for nombre, legajo in zip(nombres, legajos):
-                if nombre.strip() != '' or legajo.strip() != '':
-                    lista_tecnicos.append({'nombre': nombre.strip(), 'legajo': legajo.strip()})
-
-            # --- CAMBIO CRÍTICO AQUÍ ---
-            # ¡Serializar la lista de Python a una cadena JSON antes de guardar!
             orden.tecnicos = json.dumps(lista_tecnicos)
-            # --- FIN DEL CAMBIO CRÍTICO ---
 
-            orden.save() # Ahora guarda la cadena JSON
+            if action == "descargar":
+                # Solo genera el PDF, sin guardar en BD
+                context = {
+                    'orden': orden,
+                    'materiales_usados': material_formset.cleaned_data,
+                    'tecnicos': lista_tecnicos,
+                }
+            else:
+                # Guarda la orden normalmente
+                orden.save()
+                materiales = material_formset.save(commit=False)
+                for material in materiales:
+                    material.orden_trabajo = orden
+                    material.save()
+                material_formset.save_m2m()
 
-            # Guardar materiales relacionados
-            materiales = material_formset.save(commit=False)
-            for material in materiales:
-                material.orden_trabajo = orden
-                material.save()
-            material_formset.save_m2m()
+                context = {
+                    'orden': orden,
+                    'materiales_usados': orden.materiales_usados.all(),
+                    'tecnicos': orden.get_tecnicos_json(),
+                }
 
-            # Asegúrate de que el contexto para el PDF use el método que devuelve JSON parseado
-            # (get_tecnicos_json() o get_tecnicos_como_texto())
-            context = {
-                'orden': orden,
-                'materiales_usados': orden.materiales_usados.all(),
-                'tecnicos': orden.get_tecnicos_json(), # Esto debería funcionar ahora
-                # O si quieres el texto formateado directamente:
-                # 'tecnicos_texto': orden.get_tecnicos_como_texto(),
-            }
-    # Asegúrate de que el contexto para el PDF use el método que devuelve JSON parseado
-            # (get_tecnicos_json() o get_tecnicos_como_texto())
+            # Generar el PDF
             template_path = 'ordenes_trabajo/orden_pdf_template.html'
             template = get_template(template_path)
             html = template.render(context)
-
             response_stream = BytesIO()
             pdf = pisa.CreatePDF(html, dest=response_stream)
 
@@ -124,15 +106,15 @@ def crear_orden(request):
                 pdf_bytes = response_stream.getvalue()
                 disposition = 'inline' if action == 'generar' else 'attachment'
                 response = HttpResponse(pdf_bytes, content_type='application/pdf')
-                response['Content-Disposition'] = f'{disposition}; filename="Orden_Trabajo_{orden.pk}.pdf"'
+                response['Content-Disposition'] = f'{disposition}; filename="Orden_Trabajo.pdf"'
                 return response
             else:
                 return HttpResponse('Error al generar el PDF.', status=500)
 
         else:
+            # Si hay errores en el form
             materiales = Material.objects.all()
             unidades = {str(m.id): m.unidad for m in materiales}
-
             context = {
                 'orden_form': orden_form,
                 'material_formset': material_formset,
