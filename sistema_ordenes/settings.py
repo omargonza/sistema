@@ -20,7 +20,10 @@ DEBUG = True
 
 import os
 
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost').split(',')
+# settings.py (o settings/dev.py)
+
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,127.0.0.1:8000').split(',')
+
 
 
 
