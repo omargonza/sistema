@@ -91,15 +91,50 @@
 
             <hr class="my-4" />
 
-            <h5 class="mb-3">Técnicos</h5>
-            <div id="tecnicos-container" class="mb-2"></div>
-            <button
-              type="button"
-              class="btn btn-outline-primary btn-sm mb-3"
-              id="agregar-tecnico"
-            >
-              + Agregar Técnico
-            </button>
+          <h5 class="mb-3">Técnicos</h5>
+
+<!-- Management form -->
+{{ tecnico_formset.management_form }}
+
+<!-- Contenedor para técnicos existentes -->
+<div id="tecnicos-container" class="mb-2">
+  {% for form in tecnico_formset %}
+    <div class="row mb-2 tecnico-form align-items-end">
+      {% for field in form.visible_fields %}
+        <div class="col-md-5">
+          {{ field }}
+        </div>
+      {% endfor %}
+      <div class="col-md-2">
+        <button type="button" class="btn btn-danger btn-sm eliminar-tecnico">Eliminar</button>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+<!-- Formulario vacío para clonar -->
+<div id="empty-tecnico-form" class="d-none">
+  <div class="row mb-2 tecnico-form align-items-end">
+    {% for field in tecnico_formset.empty_form.visible_fields %}
+      <div class="col-md-5">
+        {{ field.as_widget|safe }}
+      </div>
+    {% endfor %}
+    <div class="col-md-2">
+      <button type="button" class="btn btn-danger btn-sm eliminar-tecnico">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Botón para agregar técnicos -->
+<button
+  type="button"
+  class="btn btn-outline-primary btn-sm mb-3"
+  id="agregar-tecnico"
+>
+  + Agregar Técnico
+</button>
+
 
             <hr class="my-4" />
 
@@ -175,26 +210,56 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-            let contadorTecnicos = 0;
-            document.getElementById("agregar-tecnico").addEventListener("click", () => {
-              const container = document.getElementById("tecnicos-container");
-              const bloque = document.createElement("div");
-              bloque.className = "row g-2 align-items-center mb-2";
-              bloque.innerHTML = `
-                <div class="col-md-5">
-                  <input type="text" name="tecnicos[${contadorTecnicos}][nombre]" class="form-control" placeholder="Nombre del técnico" required>
-                </div>
-                <div class="col-md-5">
-                  <input type="text" name="tecnicos[${contadorTecnicos}][legajo]" class="form-control" placeholder="Legajo" required>
-                </div>
-                <div class="col-md-2">
-                  <button type="button" class="btn btn-danger btn-sm eliminar">Eliminar</button>
-                </div>
-              `;
-              bloque.querySelector(".eliminar").addEventListener("click", () => bloque.remove());
-              container.appendChild(bloque);
-              contadorTecnicos++;
-            });
+            <script>
+document.addEventListener('DOMContentLoaded', function () {
+  const container = document.getElementById('tecnicos-container');
+  const btnAgregar = document.getElementById('agregar-tecnico');
+  const totalForms = document.getElementById('id_form-TOTAL_FORMS');
+  const emptyFormHtml = document.getElementById('empty-tecnico-form').innerHTML;
+
+  function actualizarBotonesEliminar() {
+    document.querySelectorAll('.eliminar-tecnico').forEach(btn => {
+      btn.removeEventListener('click', eliminarHandler);
+      btn.addEventListener('click', eliminarHandler);
+    });
+  }
+
+  function eliminarHandler(event) {
+    const formRow = event.target.closest('.tecnico-form');
+    formRow.remove();
+    actualizarIndices();
+  }
+
+  function actualizarIndices() {
+    const forms = container.querySelectorAll('.tecnico-form');
+    totalForms.value = forms.length;
+    forms.forEach((form, index) => {
+      form.querySelectorAll('input, select, textarea, label').forEach(el => {
+        if (el.name) {
+          el.name = el.name.replace(/form-\d+-/, `form-${index}-`);
+        }
+        if (el.id) {
+          el.id = el.id.replace(/form-\d+-/, `form-${index}-`);
+        }
+        if (el.htmlFor) {
+          el.htmlFor = el.htmlFor.replace(/form-\d+-/, `form-${index}-`);
+        }
+      });
+    });
+  }
+
+  btnAgregar.addEventListener('click', () => {
+    const newForm = document.createElement('div');
+    newForm.innerHTML = emptyFormHtml.replace(/__prefix__/g, totalForms.value);
+    container.appendChild(newForm);
+    actualizarIndices();
+    actualizarBotonesEliminar();
+  });
+
+  actualizarBotonesEliminar();
+});
+</script>
+
 
             $("#add-material").click(function () {
               const form_idx = $("#id_materialorden_set-TOTAL_FORMS").val();
