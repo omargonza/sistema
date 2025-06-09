@@ -208,58 +208,55 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <script>
-            <script>
-document.addEventListener('DOMContentLoaded', function () {
-  const container = document.getElementById('tecnicos-container');
-  const btnAgregar = document.getElementById('agregar-tecnico');
-  const totalForms = document.getElementById('id_form-TOTAL_FORMS');
-  const emptyFormHtml = document.getElementById('empty-tecnico-form').innerHTML;
+      document.addEventListener('DOMContentLoaded', function () {
+        const container = document.getElementById('tecnicos-container');
+        const btnAgregar = document.getElementById('agregar-tecnico');
+        const totalForms = document.getElementById('id_form-TOTAL_FORMS');
+        const emptyFormHtml = document.getElementById('empty-tecnico-form').innerHTML;
 
-  function actualizarBotonesEliminar() {
-    document.querySelectorAll('.eliminar-tecnico').forEach(btn => {
-      btn.removeEventListener('click', eliminarHandler);
-      btn.addEventListener('click', eliminarHandler);
-    });
-  }
+        function actualizarBotonesEliminar() {
+          document.querySelectorAll('.eliminar-tecnico').forEach(btn => {
+            btn.removeEventListener('click', eliminarHandler);
+            btn.addEventListener('click', eliminarHandler);
+          });
+        }
 
-  function eliminarHandler(event) {
-    const formRow = event.target.closest('.tecnico-form');
-    formRow.remove();
-    actualizarIndices();
-  }
+        function eliminarHandler(event) {
+          const formRow = event.target.closest('.tecnico-form');
+          formRow.remove();
+          actualizarIndices();
+        }
 
-  function actualizarIndices() {
-    const forms = container.querySelectorAll('.tecnico-form');
-    totalForms.value = forms.length;
-    forms.forEach((form, index) => {
-      form.querySelectorAll('input, select, textarea, label').forEach(el => {
-        if (el.name) {
-          el.name = el.name.replace(/form-\d+-/, `form-${index}-`);
+        function actualizarIndices() {
+          const forms = container.querySelectorAll('.tecnico-form');
+          totalForms.value = forms.length;
+          forms.forEach((form, index) => {
+            form.querySelectorAll('input, select, textarea, label').forEach(el => {
+              if (el.name) {
+                el.name = el.name.replace(/form-\d+-/, `form-${index}-`);
+              }
+              if (el.id) {
+                el.id = el.id.replace(/form-\d+-/, `form-${index}-`);
+              }
+              if (el.htmlFor) {
+                el.htmlFor = el.htmlFor.replace(/form-\d+-/, `form-${index}-`);
+              }
+            });
+          });
         }
-        if (el.id) {
-          el.id = el.id.replace(/form-\d+-/, `form-${index}-`);
-        }
-        if (el.htmlFor) {
-          el.htmlFor = el.htmlFor.replace(/form-\d+-/, `form-${index}-`);
-        }
+
+        btnAgregar.addEventListener('click', () => {
+          const newForm = document.createElement('div');
+          newForm.innerHTML = emptyFormHtml.replace(/__prefix__/g, totalForms.value);
+          container.appendChild(newForm);
+          actualizarIndices();
+          actualizarBotonesEliminar();
+        });
+
+        actualizarBotonesEliminar();
       });
-    });
-  }
-
-  btnAgregar.addEventListener('click', () => {
-    const newForm = document.createElement('div');
-    newForm.innerHTML = emptyFormHtml.replace(/__prefix__/g, totalForms.value);
-    container.appendChild(newForm);
-    actualizarIndices();
-    actualizarBotonesEliminar();
-  });
-
-  actualizarBotonesEliminar();
-});
-</script>
-
+    </script>
 
             $("#add-material").click(function () {
               const form_idx = $("#id_materialorden_set-TOTAL_FORMS").val();
