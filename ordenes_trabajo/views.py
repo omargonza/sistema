@@ -15,7 +15,7 @@ import json
 
 # Importaciones de tus modelos y formularios
 from .models import OrdenTrabajo, Material
-from .forms import OrdenTrabajoForm, MaterialOrdenFormSet
+from .forms import OrdenTrabajoForm, MaterialOrdenFormSet, MaterialOrden
 # ====================================================================
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
@@ -90,12 +90,12 @@ def crear_orden(request):
 
                 context = {
                     'orden': orden,
-                    'materiales_usados': orden.materiales_usados.all(),
+                    'materiales_usados': orden.materiales_usados.select_related('material'),
                     'tecnicos': orden.get_tecnicos_json(),  # ahora desde el modelo
                 }
 
             # Generar el PDF
-            template_path = 'ordenes_trabajo/orden_pdf_template.html'
+            template_path = 'ordenes_trabajo/orden_pdf.html'
             template = get_template(template_path)
             html = template.render(context)
             response_stream = BytesIO()
@@ -126,7 +126,7 @@ def crear_orden(request):
     else:
         # GET: mostrar formulario vacío
         orden_form = OrdenTrabajoForm()
-        material_formset = MaterialOrdenFormSet(queryset=Material.objects.none())
+        material_formset = MaterialOrdenFormSet(queryset=MaterialOrden.objects.none())
         materiales = Material.objects.all()
         unidades = {str(m.id): m.unidad for m in materiales}
 
