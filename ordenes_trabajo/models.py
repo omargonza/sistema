@@ -11,6 +11,13 @@ class Material(models.Model):
         return self.nombre
 
 class OrdenTrabajo(models.Model):
+    TIPO_MANTENIMIENTO_CHOICES = [
+        ('preventivo', 'Preventivo'),
+        ('correctivo', 'Correctivo'),
+        ('obra', 'Obra'),
+        ('relevamiento', 'Relevamiento'),
+    ]
+
     fecha = models.DateField()
     horaInicio = models.TimeField()
     horaFin = models.TimeField()
@@ -21,7 +28,11 @@ class OrdenTrabajo(models.Model):
     tablero = models.CharField(max_length=100)
     zona = models.CharField(max_length=100)
     circuito = models.CharField(max_length=100)
-
+    tipo_mantenimiento = models.CharField(
+        max_length=20,
+        choices=TIPO_MANTENIMIENTO_CHOICES,
+        default='preventivo'
+    )
     # Campo para técnicos como JSON
     tecnicos = models.TextField(
         blank=True,
