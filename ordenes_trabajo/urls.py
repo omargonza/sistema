@@ -18,7 +18,7 @@ urlpatterns = [
     path('ordenes/<int:pk>/', views.detalle_orden, name='detalle_orden'),
     path('ordenes/<int:pk>/editar/', views.editar_orden, name='editar_orden'),
     path('ordenes/<int:pk>/eliminar/', views.eliminar_orden, name='eliminar_orden'),
-       path('registro/', views.registro, name='registro'),
+    path('accounts/registro/', views.registro, name='registro'),
     path('accounts/login/', views.login_view, name='login'),  # URL para la página de login
     path('accounts/logout/', LogoutView.as_view(next_page='lista_ordenes'), name='logout'),
 ]
