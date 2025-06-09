@@ -6,109 +6,77 @@
     <meta charset="UTF-8" />
     <title>Orden de Trabajo #{{ orden.pk }}</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'ordenes_trabajo/css/orden_pdf.css' %}">
+   
 </head>
 <body>
 <style>
-body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    font-size: 11pt;
-    color: #2b2b2b;
-    background: white;
-    padding: 40px;
-    line-height: 1.5;
-    max-width: 800px;
-    margin: 0 auto;
-}
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f4f4f4;
+    }
 
-h1, h2, h3 {
-    color: #1f3a60;
-    margin-bottom: 10px;
-}
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #2c3e50;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+    }
 
-h1 {
-    font-size: 22pt;
-    border-bottom: 2px solid #1f3a60;
-    padding-bottom: 5px;
-    margin-bottom: 15px;
-}
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
 
-h2 {
-    font-size: 14pt;
-    margin-top: 0;
-}
+    .header-left h1, .header-left h2 {
+        margin: 0;
+    }
 
-h3 {
-    font-size: 13pt;
-    color: #1f3a60;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 4px;
-    margin-top: 30px;
-}
+    .header-right p {
+        margin: 5px 0;
+    }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    margin-bottom: 20px;
-}
+    section {
+        margin-top: 20px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+    }
 
-th, td {
-    border: 1px solid #d0d0d0;
-    padding: 10px 12px;
-    text-align: left;
-    vertical-align: top;
-}
+    h3 {
+        color: #2c3e50;
+    }
 
-th {
-    background-color: #e8f0fa;
-    color: #1f3a60;
-    font-weight: 600;
-}
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-td.descripcion {
-    white-space: pre-line;
-}
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
 
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-}
+    th {
+        background-color: #34495e;
+        color: white;
+    }
 
-.header-left, .header-right {
-    width: 48%;
-}
+    .descripcion {
+        white-space: pre-wrap; /* Mantiene los saltos de línea */
+    }
 
-.header-left h1 {
-    margin-bottom: 0;
-}
-
-section {
-    margin-bottom: 25px;
-}
-
-footer {
-    border-top: 1px solid #ccc;
-    text-align: center;
-    font-size: 10pt;
-    margin-top: 40px;
-    color: #666;
-}
-
-/* Estilos adicionales */
-tr:nth-child(even) td {
-    background-color: #f9f9f9;
-}
-
-tr:hover td {
-    background-color: #eef6ff;
-}
-
-table th:first-child, table td:first-child {
-    width: 35%;
-}
+    footer {
+        text-align: center;
+        margin-top: 20px;
+        color: #7f8c8d;
+    }
 
 
 </style>
