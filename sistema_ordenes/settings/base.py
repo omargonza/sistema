@@ -47,6 +47,10 @@ TEMPLATES = [
     },
 ]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+
 WSGI_APPLICATION = 'sistema_ordenes.wsgi.application'
 
 LANGUAGE_CODE = 'es-ar'

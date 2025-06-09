@@ -3,6 +3,8 @@ from django.contrib import admin
 from . import views
 from django.contrib.auth.views import LogoutView
 from django.views.generic.base import RedirectView # <-- ¡Importa esto!
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -21,4 +23,4 @@ urlpatterns = [
     path('accounts/registro/', views.registro, name='registro'),
     path('accounts/login/', views.login_view, name='login'),  # URL para la página de login
     path('accounts/logout/', LogoutView.as_view(next_page='lista_ordenes'), name='logout'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
