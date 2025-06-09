@@ -6,46 +6,36 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #2c3e50;
+    font-family: Arial, sans-serif;
+    color: #000;
     font-size: 12pt;
     line-height: 1.4;
     background: white;
     padding: 20px;
-
-    /* Para mejorar impresión de colores en navegadores compatibles */
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
 }
 
-/* Contenedor general para no exceder A4 */
-@page {
-    size: A4 portrait;
-    margin: 2cm 2cm 2cm 2cm;
-}
+/* Eliminado @page para evitar errores */
 
 header {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 2px solid #34495e;
+    border-bottom: 1px solid #000;
     padding-bottom: 10px;
     margin-bottom: 15px;
 }
 
 header h1 {
-    font-size: 24pt;
-    color: #34495e;
+    font-size: 18pt;
+    color: #000;
 }
 
 header h2 {
-    font-size: 14pt;
-    font-weight: 600;
-    color: #7f8c8d;
+    font-size: 12pt;
+    font-weight: bold;
+    color: #444;
 }
 
 header .header-right p {
     font-size: 11pt;
-    color: #34495e;
+    color: #000;
     margin-bottom: 3px;
 }
 
@@ -54,32 +44,33 @@ section {
 }
 
 h3 {
-    font-size: 16pt;
-    color: #2980b9;
-    border-bottom: 2px solid #2980b9;
+    font-size: 14pt;
+    color: #000;
+    border-bottom: 1px solid #000;
     padding-bottom: 5px;
     margin-bottom: 10px;
-    font-weight: 700;
+    font-weight: bold;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 10pt;
 }
 
 th, td {
-    padding: 8px 12px;
-    border: 1px solid #bdc3c7;
+    padding: 6px;
+    border: 1px solid #000;
 }
 
 th {
-    background-color: #3498db;
-    color: white;
+    background-color: #ddd;
+    color: #000;
     text-align: left;
 }
 
 td {
-    background-color: #ecf0f1;
+    background-color: #f9f9f9;
 }
 
 .descripcion {
@@ -88,14 +79,13 @@ td {
 }
 
 footer {
-    border-top: 2px solid #34495e;
+    border-top: 1px solid #000;
     text-align: center;
     padding-top: 8px;
-    font-size: 10pt;
-    color: #7f8c8d;
-    position: fixed;
-    bottom: 15px;
-    width: 90%;
+    font-size: 9pt;
+    color: #444;
+    /* No usar fixed: no funciona bien en xhtml2pdf */
+    margin-top: 20px;
 }
 footer p {
     margin: 0;
