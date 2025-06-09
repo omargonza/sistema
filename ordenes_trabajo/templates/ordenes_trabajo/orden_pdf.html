@@ -2,141 +2,149 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Orden de Trabajo #{{ orden.pk }}</title>
-    <style>
-        body {
-            font-family: Helvetica, sans-serif;
-            font-size: 12px;
-            margin: 0;
-            padding: 20px;
-        }
+  <meta charset="UTF-8">
+  <title>Orden de Trabajo #{{ orden.pk|default:"(no guardada)" }}</title>
+  <style>
+    body {
+      font-family: Helvetica, sans-serif;
+      font-size: 11pt;
+      margin: 40px;
+      padding: 0;
+      color: #333;
+    }
 
-        .container {
-            width: 700px;
-            margin: 0 auto;
-        }
+    h1, h2, h3 {
+      text-align: center;
+      margin: 0 0 10px;
+    }
 
-        h1, h2, h3 {
-            text-align: center;
-            margin-bottom: 10px;
-        }
+    h1 {
+      font-size: 20pt;
+      border-bottom: 2px solid #444;
+      padding-bottom: 5px;
+      margin-bottom: 15px;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 15px;
-        }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
 
-        th, td {
-            border: 1px solid #000;
-            padding: 5px;
-            vertical-align: top;
-            text-align: left;
-        }
+    th, td {
+      border: 1px solid #999;
+      padding: 6px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
 
-        .section {
-            margin-top: 20px;
-        }
+    th {
+      background-color: #e0e6ed;
+      font-weight: bold;
+    }
 
-        .footer {
-            text-align: center;
-            font-size: 10px;
-            margin-top: 40px;
-        }
-    </style>
+    .section-title {
+      margin-top: 30px;
+      margin-bottom: 10px;
+      font-size: 13pt;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 4px;
+    }
+
+    .descripcion {
+      white-space: pre-line;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 9pt;
+      color: #666;
+    }
+  </style>
 </head>
 <body>
-<div class="container">
 
-    <h1>Orden de Trabajo</h1>
-    <h2>ID: {{ orden.pk }}</h2>
+  <h1>Orden de Trabajo</h1>
+  <h2>ID: {{ orden.pk|default:"(no guardada)" }}</h2>
 
-    <div class="section">
-        <table>
-            <tr>
-                <th>Fecha</th>
-                <td>{{ orden.fecha|date:"d/m/Y" }}</td>
-                <th>Hora Inicio</th>
-                <td>{{ orden.hora_inicio|default:"-" }}</td>
-                <th>Hora Fin</th>
-                <td>{{ orden.hora_fin|default:"-" }}</td>
-            </tr>
-            <tr>
-                <th>Vehículo</th>
-                <td colspan="2">{{ orden.vehiculo }}</td>
-                <th>Kilometraje</th>
-                <td colspan="2">{{ orden.kilometraje }}</td>
-            </tr>
-            <tr>
-                <th>Tipo de Mantenimiento</th>
-                <td colspan="5">{{ orden.tipo_mantenimiento }}</td>
-            </tr>
-            <tr>
-                <th>Zona / Circuito</th>
-                <td colspan="5">{{ orden.zona }} / {{ orden.circuito }}</td>
-            </tr>
-            <tr>
-                <th>Descripción</th>
-                <td colspan="5">{{ orden.descripcion|linebreaksbr }}</td>
-            </tr>
-        </table>
-    </div>
+  <h3 class="section-title">Datos Generales</h3>
+  <table>
+    <tr>
+      <th>Fecha</th>
+      <td>{{ orden.fecha|date:"d/m/Y" }}</td>
+      <th>Hora Inicio</th>
+      <td>{{ orden.horaInicio|default:"-" }}</td>
+      <th>Hora Fin</th>
+      <td>{{ orden.horaFin|default:"-" }}</td>
+    </tr>
+    <tr>
+      <th>Vehículo</th>
+      <td colspan="2">{{ orden.vehiculo }}</td>
+      <th>Tipo de Mantenimiento</th>
+      <td colspan="2">{{ orden.tipo_mantenimiento|title }}</td>
+    </tr>
+    <tr>
+      <th>Kilometraje Inicial / Final</th>
+      <td colspan="2">{{ orden.kmInicial }} / {{ orden.kmFinal }}</td>
+      <th>Zona / Circuito</th>
+      <td colspan="2">{{ orden.zona }} / {{ orden.circuito }}</td>
+    </tr>
+    <tr>
+      <th>Descripción</th>
+      <td colspan="5" class="descripcion">{{ orden.descripcion|linebreaksbr }}</td>
+    </tr>
+  </table>
 
-    <div class="section">
-        <h3>Técnicos</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Legajo</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for tecnico in tecnicos %}
-                <tr>
-                    <td>{{ tecnico.nombre }}</td>
-                    <td>{{ tecnico.legajo }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="2" style="text-align:center;">No hay técnicos asignados</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+  <h3 class="section-title">Técnicos</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Legajo</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for tecnico in tecnicos %}
+      <tr>
+        <td>{{ tecnico.nombre }}</td>
+        <td>{{ tecnico.legajo }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="2" style="text-align: center;">No hay técnicos asignados</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-    <div class="section">
-        <h3>Materiales Usados</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Material</th>
-                    <th>Cantidad</th>
-                    <th>Unidad</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in materiales_usados %}
-                <tr>
-                    <td>{{ item.material.nombre }}</td>
-                    <td>{{ item.cantidad }}</td>
-                    <td>{{ item.unidad }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="3" style="text-align:center;">No se usaron materiales</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+  <h3 class="section-title">Materiales Usados</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Material</th>
+        <th>Cantidad</th>
+        <th>Unidad</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in materiales_usados %}
+      <tr>
+        <td>{{ item.material.nombre }}</td>
+        <td>{{ item.cantidad }}</td>
+        <td>{{ item.unidad }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="3" style="text-align: center;">No se usaron materiales</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-    <div class="footer">
-        © {{ now|date:"Y" }} - Orden de trabajo generada por el sistema
-    </div>
+  <div class="footer">
+    © {{ now|date:"Y" }} - Orden de trabajo generada por el sistema
+  </div>
 
-</div>
 </body>
 </html>
