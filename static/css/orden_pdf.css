@@ -1,92 +1,96 @@
-/* RESET básico para impresión limpia */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* PDF CSS - Profesional y Sofisticado */
 body {
-    font-family: Arial, sans-serif;
-    color: #000;
-    font-size: 12pt;
-    line-height: 1.4;
-    background: white;
-    padding: 20px;
-}
-
-/* Eliminado @page para evitar errores */
-
-header {
-    border-bottom: 1px solid #000;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-}
-
-header h1 {
-    font-size: 18pt;
-    color: #000;
-}
-
-header h2 {
-    font-size: 12pt;
-    font-weight: bold;
-    color: #444;
-}
-
-header .header-right p {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
     font-size: 11pt;
-    color: #000;
-    margin-bottom: 3px;
+    color: #2b2b2b;
+    background: white;
+    padding: 40px;
+    line-height: 1.5;
+}
+
+h1, h2, h3 {
+    color: #1f3a60;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 22pt;
+    border-bottom: 2px solid #1f3a60;
+    padding-bottom: 5px;
+}
+
+h2 {
+    font-size: 14pt;
+    margin-top: 0;
+}
+
+h3 {
+    font-size: 13pt;
+    color: #1f3a60;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 4px;
+    margin-top: 30px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #d0d0d0;
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background-color: #e8f0fa;
+    color: #1f3a60;
+    font-weight: 600;
+}
+
+td.descripcion {
+    white-space: pre-line;
+}
+
+.header-left, .header-right {
+    display: inline-block;
+    vertical-align: top;
+    width: 48%;
+}
+
+.header-left {
+    text-align: left;
+}
+
+.header-right {
+    text-align: right;
 }
 
 section {
     margin-bottom: 20px;
 }
 
-h3 {
-    font-size: 14pt;
-    color: #000;
-    border-bottom: 1px solid #000;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
+footer {
+    border-top: 1px solid #ccc;
+    text-align: center;
     font-size: 10pt;
+    margin-top: 40px;
+    color: #666;
 }
 
-th, td {
-    padding: 6px;
-    border: 1px solid #000;
-}
-
-th {
-    background-color: #ddd;
-    color: #000;
-    text-align: left;
-}
-
-td {
+/* Estilos adicionales */
+tr:nth-child(even) td {
     background-color: #f9f9f9;
 }
 
-.descripcion {
-    white-space: pre-wrap;
-    font-style: italic;
+tr:hover td {
+    background-color: #eef6ff;
 }
 
-footer {
-    border-top: 1px solid #000;
-    text-align: center;
-    padding-top: 8px;
-    font-size: 9pt;
-    color: #444;
-    /* No usar fixed: no funciona bien en xhtml2pdf */
-    margin-top: 20px;
-}
-footer p {
-    margin: 0;
+table th:first-child, table td:first-child {
+    width: 45%;
 }

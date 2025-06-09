@@ -9,6 +9,106 @@
     <link rel="stylesheet" href="{% static 'ordenes_trabajo/css/orden_pdf.css' %}">
 </head>
 <body>
+<style>
+/* pega aquí el CSS directamente */
+/* PDF CSS - Profesional y Sofisticado */
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    font-size: 11pt;
+    color: #2b2b2b;
+    background: white;
+    padding: 40px;
+    line-height: 1.5;
+}
+
+h1, h2, h3 {
+    color: #1f3a60;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 22pt;
+    border-bottom: 2px solid #1f3a60;
+    padding-bottom: 5px;
+}
+
+h2 {
+    font-size: 14pt;
+    margin-top: 0;
+}
+
+h3 {
+    font-size: 13pt;
+    color: #1f3a60;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 4px;
+    margin-top: 30px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #d0d0d0;
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background-color: #e8f0fa;
+    color: #1f3a60;
+    font-weight: 600;
+}
+
+td.descripcion {
+    white-space: pre-line;
+}
+
+.header-left, .header-right {
+    display: inline-block;
+    vertical-align: top;
+    width: 48%;
+}
+
+.header-left {
+    text-align: left;
+}
+
+.header-right {
+    text-align: right;
+}
+
+section {
+    margin-bottom: 20px;
+}
+
+footer {
+    border-top: 1px solid #ccc;
+    text-align: center;
+    font-size: 10pt;
+    margin-top: 40px;
+    color: #666;
+}
+
+/* Estilos adicionales */
+tr:nth-child(even) td {
+    background-color: #f9f9f9;
+}
+
+tr:hover td {
+    background-color: #eef6ff;
+}
+
+table th:first-child, table td:first-child {
+    width: 45%;
+}
+
+</style>
 
 <header>
     <div class="header-left">
