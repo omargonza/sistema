@@ -1,4 +1,4 @@
-/* PDF CSS - Profesional y Sofisticado */
+
 body {
     font-family: 'Segoe UI', Tahoma, sans-serif;
     font-size: 11pt;
@@ -6,6 +6,8 @@ body {
     background: white;
     padding: 40px;
     line-height: 1.5;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 h1, h2, h3 {
@@ -17,6 +19,7 @@ h1 {
     font-size: 22pt;
     border-bottom: 2px solid #1f3a60;
     padding-bottom: 5px;
+    margin-bottom: 15px;
 }
 
 h2 {
@@ -41,7 +44,7 @@ table {
 
 th, td {
     border: 1px solid #d0d0d0;
-    padding: 8px;
+    padding: 10px 12px;
     text-align: left;
     vertical-align: top;
 }
@@ -56,22 +59,23 @@ td.descripcion {
     white-space: pre-line;
 }
 
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
 .header-left, .header-right {
-    display: inline-block;
-    vertical-align: top;
     width: 48%;
 }
 
-.header-left {
-    text-align: left;
-}
-
-.header-right {
-    text-align: right;
+.header-left h1 {
+    margin-bottom: 0;
 }
 
 section {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 footer {
@@ -92,5 +96,6 @@ tr:hover td {
 }
 
 table th:first-child, table td:first-child {
-    width: 45%;
+    width: 35%;
 }
+
