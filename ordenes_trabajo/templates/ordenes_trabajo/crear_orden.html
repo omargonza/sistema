@@ -92,48 +92,40 @@
             <hr class="my-4" />
 
           <h5 class="mb-3">Técnicos</h5>
+<h5 class="mb-3">Técnicos</h5>
 
-<!-- Management form -->
-{{ tecnico_formset.management_form }}
-
-<!-- Contenedor para técnicos existentes -->
 <div id="tecnicos-container" class="mb-2">
-  {% for form in tecnico_formset %}
+  {% if tecnicos %}
+    {% for tecnico in tecnicos %}
     <div class="row mb-2 tecnico-form align-items-end">
-      {% for field in form.visible_fields %}
-        <div class="col-md-5">
-          {{ field }}
-        </div>
-      {% endfor %}
+      <div class="col-md-5">
+        <input type="text" name="tecnico_nombre[]" class="form-control" placeholder="Nombre" value="{{ tecnico.nombre }}">
+      </div>
+      <div class="col-md-5">
+        <input type="text" name="tecnico_legajo[]" class="form-control" placeholder="Legajo" value="{{ tecnico.legajo }}">
+      </div>
       <div class="col-md-2">
         <button type="button" class="btn btn-danger btn-sm eliminar-tecnico">Eliminar</button>
       </div>
     </div>
-  {% endfor %}
-</div>
-
-<!-- Formulario vacío para clonar -->
-<div id="empty-tecnico-form" class="d-none">
-  <div class="row mb-2 tecnico-form align-items-end">
-    {% for field in tecnico_formset.empty_form.visible_fields %}
-      <div class="col-md-5">
-        {{ field.as_widget|safe }}
-      </div>
     {% endfor %}
-    <div class="col-md-2">
-      <button type="button" class="btn btn-danger btn-sm eliminar-tecnico">Eliminar</button>
+  {% else %}
+    <!-- Si no hay técnicos cargados, dejamos un campo vacío por defecto -->
+    <div class="row mb-2 tecnico-form align-items-end">
+      <div class="col-md-5">
+        <input type="text" name="tecnico_nombre[]" class="form-control" placeholder="Nombre">
+      </div>
+      <div class="col-md-5">
+        <input type="text" name="tecnico_legajo[]" class="form-control" placeholder="Legajo">
+      </div>
+      <div class="col-md-2">
+        <button type="button" class="btn btn-danger btn-sm eliminar-tecnico">Eliminar</button>
+      </div>
     </div>
-  </div>
+  {% endif %}
 </div>
 
-<!-- Botón para agregar técnicos -->
-<button
-  type="button"
-  class="btn btn-outline-primary btn-sm mb-3"
-  id="agregar-tecnico"
->
-  + Agregar Técnico
-</button>
+<button type="button" class="btn btn-outline-primary btn-sm mb-3" id="agregar-tecnico">+ Agregar Técnico</button>
 
 
             <hr class="my-4" />
@@ -208,115 +200,103 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+     <script>document.addEventListener('DOMContentLoaded', function () {
+  const contenedorTecnicos = document.getElementById('tecnicos-container');
+  const btnAgregarTecnico = document.getElementById('agregar-tecnico');
+
+  btnAgregarTecnico.addEventListener('click', function () {
+    const nuevoTecnico = document.createElement('div');
+    nuevoTecnico.classList.add('row', 'mb-2', 'tecnico-form', 'align-items-end');
+    nuevoTecnico.innerHTML = `
+      <div class="col-md-5">
+        <input type="text" name="tecnico_nombre[]" class="form-control" placeholder="Nombre">
+      </div>
+      <div class="col-md-5">
+        <input type="text" name="tecnico_legajo[]" class="form-control" placeholder="Legajo">
+      </div>
+      <div class="col-md-2">
+        <button type="button" class="btn btn-danger btn-sm eliminar-tecnico">Eliminar</button>
+      </div>
+    `;
+    contenedorTecnicos.appendChild(nuevoTecnico);
+  });
+
+  contenedorTecnicos.addEventListener('click', function (event) {
+    if (event.target.classList.contains('eliminar-tecnico')) {
+      const tecnicoForm = event.target.closest('.tecnico-form');
+      if (tecnicoForm) {
+        tecnicoForm.remove();
+      }
+    }
+  });
+});
+
+      </script>
+
+    
+
     <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const container = document.getElementById('tecnicos-container');
-        const btnAgregar = document.getElementById('agregar-tecnico');
-        const totalForms = document.getElementById('id_form-TOTAL_FORMS');
-        const emptyFormHtml = document.getElementById('empty-tecnico-form').innerHTML;
-
-        function actualizarBotonesEliminar() {
-          document.querySelectorAll('.eliminar-tecnico').forEach(btn => {
-            btn.removeEventListener('click', eliminarHandler);
-            btn.addEventListener('click', eliminarHandler);
-          });
-        }
-
-        function eliminarHandler(event) {
-          const formRow = event.target.closest('.tecnico-form');
-          formRow.remove();
-          actualizarIndices();
-        }
-
-        function actualizarIndices() {
-          const forms = container.querySelectorAll('.tecnico-form');
-          totalForms.value = forms.length;
-          forms.forEach((form, index) => {
-            form.querySelectorAll('input, select, textarea, label').forEach(el => {
-              if (el.name) {
-                el.name = el.name.replace(/form-\d+-/, `form-${index}-`);
-              }
-              if (el.id) {
-                el.id = el.id.replace(/form-\d+-/, `form-${index}-`);
-              }
-              if (el.htmlFor) {
-                el.htmlFor = el.htmlFor.replace(/form-\d+-/, `form-${index}-`);
-              }
-            });
-          });
-        }
-
-        btnAgregar.addEventListener('click', () => {
-          const newForm = document.createElement('div');
-          newForm.innerHTML = emptyFormHtml.replace(/__prefix__/g, totalForms.value);
-          container.appendChild(newForm);
-          actualizarIndices();
-          actualizarBotonesEliminar();
+      $(document).ready(function () {
+        // Agregar nuevo material
+        $("#add-material").click(function () {
+          const form_idx = $("#id_materialorden_set-TOTAL_FORMS").val();
+          const new_form = $("#empty-material-form").html().replace(/__prefix__/g, form_idx);
+          $("#material-forms").append(new_form);
+          $("#id_materialorden_set-TOTAL_FORMS").val(parseInt(form_idx) + 1);
         });
 
-        actualizarBotonesEliminar();
-      });
-    </script>
+        // Descargar PDF
+        document.getElementById("btn-descargar-pdf").addEventListener("click", function (e) {
+          e.preventDefault();
+          const form = document.getElementById("form-orden");
+          const formData = new FormData(form);
+          formData.append("action", "descargar");
 
-            $("#add-material").click(function () {
-              const form_idx = $("#id_materialorden_set-TOTAL_FORMS").val();
-              const new_form = $("#empty-material-form").html().replace(/__prefix__/g, form_idx);
-              $("#material-forms").append(new_form);
-              $("#id_materialorden_set-TOTAL_FORMS").val(parseInt(form_idx) + 1);
-            });
-
-            document.getElementById("btn-descargar-pdf").addEventListener("click", function (e) {
-        e.preventDefault();  // 👈 evitar comportamiento por defecto
-
-        const form = document.getElementById("form-orden"); // 👈 usar el ID correcto
-        const formData = new FormData(form);
-        formData.append("action", "descargar");
-
-        fetch("{% url 'crear_orden' %}", {  // 👈 usar la URL directamente
-          method: "POST",
-          body: formData,
-          headers: {
-            "X-Requested-With": "XMLHttpRequest",
-            "X-CSRFToken": "{{ csrf_token }}",
-          },
-        })
-          .then((response) => {
-            if (!response.ok) throw new Error("Error en la descarga");
-            return response.blob();
+          fetch("{% url 'crear_orden' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+              "X-Requested-With": "XMLHttpRequest",
+              "X-CSRFToken": "{{ csrf_token }}",
+            },
           })
-          .then((blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "orden_trabajo.pdf";
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-          })
-          .catch((error) => alert("No se pudo descargar el PDF."));
+            .then((response) => {
+              if (!response.ok) throw new Error("Error en la descarga");
+              return response.blob();
+            })
+            .then((blob) => {
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = "orden_trabajo.pdf";
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+            })
+            .catch(() => alert("No se pudo descargar el PDF."));
+        });
+
+        // Mostrar unidad de material seleccionada
+        const unidades = {
+          {% for material in materiales %}
+            "{{ material.id }}": "{{ material.unidad }}",
+          {% endfor %}
+        };
+
+        function actualizarUnidad(select) {
+          const unidadSpan = select.parentElement.querySelector(".unidad-material");
+          const selectedId = select.value;
+          if (unidadSpan) {
+            unidadSpan.textContent = unidades[selectedId] || "";
+          }
+        }
+
+        document.querySelectorAll('select[name$="material"]').forEach(select => {
+          select.addEventListener("change", () => actualizarUnidad(select));
+          actualizarUnidad(select);
+        });
       });
-
-
-            document.addEventListener("DOMContentLoaded", function () {
-              const unidades = {
-                {% for material in materiales %}
-                  "{{ material.id }}": "{{ material.unidad }}",
-                {% endfor %}
-              };
-
-              function actualizarUnidad(select) {
-                const unidadSpan = select.parentElement.querySelector(".unidad-material");
-                const selectedId = select.value;
-                if (unidadSpan) {
-                  unidadSpan.textContent = unidades[selectedId] || "";
-                }
-              }
-
-              document.querySelectorAll('select[name$="material"]').forEach(select => {
-                select.addEventListener("change", () => actualizarUnidad(select));
-                actualizarUnidad(select);
-              });
-            });
     </script>
   </body>
 </html>

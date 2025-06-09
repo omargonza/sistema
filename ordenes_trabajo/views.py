@@ -52,7 +52,6 @@ def registro(request):
         form = UserCreationForm()
     return render(request, 'ordenes_trabajo/registro.html', {'form': form})
 
-
 @login_required
 def crear_orden(request):
     if request.method == 'POST':
@@ -60,7 +59,7 @@ def crear_orden(request):
         material_formset = MaterialOrdenFormSet(request.POST)
         action = request.POST.get('action')
 
-        # Capturar técnicos
+        # Capturar técnicos dinámicos desde los inputs del form
         nombres = request.POST.getlist('tecnico_nombre[]')
         legajos = request.POST.getlist('tecnico_legajo[]')
         lista_tecnicos = [
@@ -71,17 +70,17 @@ def crear_orden(request):
 
         if orden_form.is_valid() and material_formset.is_valid():
             orden = orden_form.save(commit=False)
-            orden.tecnicos = json.dumps(lista_tecnicos)
+            orden.tecnicos = json.dumps(lista_tecnicos, ensure_ascii=False)
 
             if action == "descargar":
-                # Solo genera el PDF, sin guardar en BD
+                # Solo genera el PDF, sin guardar en la base
                 context = {
                     'orden': orden,
                     'materiales_usados': material_formset.cleaned_data,
-                    'tecnicos': lista_tecnicos,
+                    'tecnicos': lista_tecnicos,  # técnicos sin guardar aún
                 }
             else:
-                # Guarda la orden normalmente
+                # Guarda la orden y los materiales
                 orden.save()
                 materiales = material_formset.save(commit=False)
                 for material in materiales:
@@ -92,7 +91,7 @@ def crear_orden(request):
                 context = {
                     'orden': orden,
                     'materiales_usados': orden.materiales_usados.all(),
-                    'tecnicos': orden.get_tecnicos_json(),
+                    'tecnicos': orden.get_tecnicos_json(),  # ahora desde el modelo
                 }
 
             # Generar el PDF
@@ -112,7 +111,7 @@ def crear_orden(request):
                 return HttpResponse('Error al generar el PDF.', status=500)
 
         else:
-            # Si hay errores en el form
+            # Formulario inválido: volver a mostrar con datos anteriores
             materiales = Material.objects.all()
             unidades = {str(m.id): m.unidad for m in materiales}
             context = {
@@ -120,10 +119,12 @@ def crear_orden(request):
                 'material_formset': material_formset,
                 'materiales': materiales,
                 'unidades': unidades,
+                'tecnicos': lista_tecnicos,  # vuelve a pasar los técnicos para mostrarlos de nuevo
             }
             return render(request, 'ordenes_trabajo/crear_orden.html', context)
 
     else:
+        # GET: mostrar formulario vacío
         orden_form = OrdenTrabajoForm()
         material_formset = MaterialOrdenFormSet(queryset=Material.objects.none())
         materiales = Material.objects.all()
@@ -134,6 +135,7 @@ def crear_orden(request):
             'material_formset': material_formset,
             'materiales': materiales,
             'unidades': unidades,
+            'tecnicos': [],  # lista vacía de técnicos al inicio
         }
         return render(request, 'ordenes_trabajo/crear_orden.html', context)
 
