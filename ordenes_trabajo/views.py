@@ -173,7 +173,7 @@ def eliminar_orden(request, pk):
     if request.method == 'POST':
         orden.delete()
         messages.success(request, f"La orden #{pk} fue eliminada correctamente.")
-        return redirect('listar_ordenes')  # cambiá al nombre real de tu vista de listado
+        return redirect('lista_ordenes')  # cambiá al nombre real de tu vista de listado
 
     return render(request, 'ordenes_trabajo/confirmar_eliminacion.html', {'orden': orden})
 
