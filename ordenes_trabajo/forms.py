@@ -28,6 +28,7 @@ class OrdenTrabajoForm(forms.ModelForm):
             "kmInicial": forms.NumberInput(attrs={"class": "form-control", "placeholder": "Ej. 12345"}),
             "kmFinal": forms.NumberInput(attrs={"class": "form-control", "placeholder": "Ej. 12378"}),
             "descripcion": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
+            "tipo_mantenimiento": forms.Select(attrs={"class": "form-select"}),
         }
 
 class MaterialOrdenForm(forms.ModelForm):
