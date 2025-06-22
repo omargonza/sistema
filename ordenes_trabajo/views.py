@@ -21,7 +21,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
 import logging
-
+from django.contrib import messages
 logger = logging.getLogger(__name__)
 
 def login_view(request):
@@ -167,9 +167,15 @@ def editar_orden(_, pk):
 
 
 @login_required
-def eliminar_orden(_, pk):
+def eliminar_orden(request, pk):
     orden = get_object_or_404(OrdenTrabajo, pk=pk)
-    return HttpResponse(f"Aquí se confirmará la eliminación de la orden de trabajo con ID: {orden.pk}")
+
+    if request.method == 'POST':
+        orden.delete()
+        messages.success(request, f"La orden #{pk} fue eliminada correctamente.")
+        return redirect('listar_ordenes')  # cambiá al nombre real de tu vista de listado
+
+    return render(request, 'ordenes_trabajo/confirmar_eliminacion.html', {'orden': orden})
 
 
 @login_required
