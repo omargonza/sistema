@@ -16,6 +16,7 @@ class OrdenTrabajoForm(forms.ModelForm):
             "kmInicial",
             "kmFinal",
             "descripcion",
+            "tipo_mantenimiento",
         ]
         widgets = {
             "fecha": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
