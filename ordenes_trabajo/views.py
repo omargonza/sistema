@@ -107,7 +107,7 @@ MATERIALES_DISPONIBLES = [
 def crear_orden(request):
     if request.method == 'POST':
         orden_form = OrdenTrabajoForm(request.POST)
-        material_formset = MaterialOrdenFormSet(request.POST)
+        #material_formset = MaterialOrdenFormSet(request.POST)
         action = request.POST.get('action')
 
         # Capturar técnicos dinámicos desde los inputs del form
@@ -160,8 +160,6 @@ def crear_orden(request):
                 return HttpResponse('Error al generar el PDF.', status=500)
 
         else:
-            # Formulario inválido: volver a mostrar con datos anteriores
-        
          context = {
                 'orden_form': orden_form,
                 'tecnicos': lista_tecnicos,

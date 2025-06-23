@@ -82,7 +82,13 @@
       }
     </style>
   </head>
- <>
+    <body>
+        {% comment %}
+        Cambia 'logo_path' por la ruta correcta de tu logo.
+        Si estás usando Django, puedes usar el tag static para cargarlo.
+        {% endcomment %}
+        {% load static %}
+        {% with logo_path="path/to/your/logo.png" %}
   <header>
    <img src="{{ logo_path }}" alt="Logo" />
 

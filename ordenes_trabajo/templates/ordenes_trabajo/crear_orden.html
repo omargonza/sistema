@@ -307,14 +307,7 @@
     </script>
 
     <script>
-      $(document).ready(function () {
-        // Agregar nuevo material
-        $("#add-material").click(function () {
-          const form_idx = $("#id_materialorden_set-TOTAL_FORMS").val();
-          const new_form = $("#empty-material-form").html().replace(/__prefix__/g, form_idx);
-          $("#material-forms").append(new_form);
-          $("#id_materialorden_set-TOTAL_FORMS").val(parseInt(form_idx) + 1);
-        });
+  
 
         // Descargar PDF
         document.getElementById("btn-descargar-pdf").addEventListener("click", function (e) {
