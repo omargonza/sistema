@@ -1,46 +1,92 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      font-size: 12px;
-      color: #000;
-    }
-    header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    header img {
-      width: 80px;
-      height: auto;
-      margin-right: 20px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    th, td {
-      border: 1px solid #999;
-      padding: 6px;
-      text-align: left;
-    }
-    th {
-      background-color: #f0f0f0;
-    }
-    .seccion {
-      margin-top: 20px;
-    }
-  </style>
-</head>
-<body>
-  <header>
-  <img src="{{ logo_path }}" alt="Logo" />
+  <head>
+    <meta charset="UTF-8" />
+    <title>Orden de Trabajo #{{ orden.pk|default:"(no guardada)" }}</title>
+    <style>
+      body {
+        font-family: Helvetica, sans-serif;
+        font-size: 11pt;
+        margin: 40px;
+        padding: 0;
+        color: #333;
+      }
 
-    <h1>Orden de Trabajo #{{ orden.pk }}</h1>
+      h1,
+      h2,
+      h3 {
+        text-align: center;
+        margin: 0 0 10px;
+      }
+
+      h1 {
+        font-size: 20pt;
+        border-bottom: 2px solid #444;
+        padding-bottom: 5px;
+        margin-bottom: 15px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        table-layout: fixed;
+      }
+
+      th,
+      td {
+        border: 1px solid #999;
+        padding: 6px 8px;
+        vertical-align: top;
+        word-wrap: break-word;
+      }
+
+      th {
+        background-color: #e0e6ed;
+        width: 35%;
+      }
+
+      td {
+        width: 65%;
+      }
+
+      .section-title {
+        margin-top: 30px;
+        margin-bottom: 10px;
+        font-size: 13pt;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 4px;
+      }
+
+      .descripcion {
+        white-space: pre-line;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 9pt;
+        color: #666;
+      }
+      .footer {
+        font-size: 9pt;
+        color: #999;
+      }
+      .footer a {
+        color:rgb(96, 131, 176);
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+ <>
+  <header>
+   <img src="{{ logo_path }}" alt="Logo" />
+
+    <h2>Orden de Trabajo</h2>
   </header>
 
   <div class="seccion">
@@ -86,5 +132,9 @@
       </tbody>
     </table>
   </div>
-</body>
+
+    <div class="footer">
+      © {{ now|date:"Y" }} - Orden de trabajo -Mantenimiento electrico
+    </div>
+  </body>
 </html>
