@@ -54,11 +54,54 @@ def registro(request):
 
 
 MATERIALES_DISPONIBLES = [
-    {"nombre": "Cable 4mm", "unidad": "m"},
+    {"nombre": "Cable unipolar marron 2.5mm", "unidad": "m"},
+    {"nombre": "Cable unipolar marron 4mm", "unidad": "m"},
+    {"nombre": "Cable unipolar marron 6mm", "unidad": "m"},
+    {"nombre": "Cable unipolar azul 2.5mm", "unidad": "m"},
+    {"nombre": "Cable unipolar azul 4mm", "unidad": "m"},
+    {"nombre": "Cable unipolar azul 6mm", "unidad": "m"},
+    {"nombre": "Cable unipolar verde 2.5mm", "unidad": "m"},
+    {"nombre": "Cable unipolar verde 4mm", "unidad": "m"},
+    {"nombre": "Cable unipolar verde 6mm", "unidad": "m"},
+    {"nombre": "Terminal ojal  azul", "unidad": "unidad"},
+    {"nombre": "Terminal ojal amarillo", "unidad": "unidad"},
+    {"nombre": "Terminal ojal rojo", "unidad": "unidad"},
+    {"nombre": "Terminal ojal  16mm", "unidad": "unidad"},
+    {"nombre": "Terminal ojal  10mm", "unidad": "unidad"},
+    {"nombre": "Terminal ojal 6mm", "unidad": "unidad"},
+    {"nombre": "Terminal ojal  2.5mm", "unidad": "unidad"},
+    {"nombre": "Manguitos  azul", "unidad": "unidad"},
+    {"nombre": "Manguito  amarillo", "unidad": "unidad"},
+    {"nombre": "Manguito  rojo", "unidad": "unidad"},
     {"nombre": "Tubo PVC 20mm", "unidad": "m"},
-    {"nombre": "Llave térmica", "unidad": "unidad"},
+    {"nombre": "Llave térmomagnetica tripolar 16A", "unidad": "unidad"},
+    {"nombre": "Llave térmomagnetica tripolar 20A", "unidad": "unidad"},
+    {"nombre": "Llave térmomagnetica monofasica 16A", "unidad": "unidad"},
+    {"nombre": "Llave térmomagnetica monofasica 20A", "unidad": "unidad"},
+    {"nombre": "Sintenax 4*10", "unidad": "m"},
+    {"nombre": "Sintenax 4*16", "unidad": "m"},
+    {"nombre": "Sintenax 4*25", "unidad": "m"},
     {"nombre": "Soporte metálico", "unidad": "pieza"},
+    {"nombre": "Balasto 400w", "unidad": "unidad"},
+    {"nombre": "Balasto 250w", "unidad": "unidad"},
+    {"nombre": "Balasto 150w", "unidad": "unidad"},
+    {"nombre": "Lampara Sodio 400w", "unidad": "unidad"},
+    {"nombre": "Lampara Sodio 250w", "unidad": "unidad"},
+    {"nombre": "Lampara Sodio 150w", "unidad": "unidad"},
+    {"nombre": "Lampara Mercurio 400w", "unidad": "unidad"},
+    {"nombre": "Lampara Mercurio 250w", "unidad": "unidad"},
+    {"nombre": "Lampara Mercurio 150w", "unidad": "unidad"},
+    {"nombre": "Capacitor 50mf", "unidad": "unidad"},
+    {"nombre": "Capacitor 32mf", "unidad": "unidad"},
+    {"nombre": "Capacitor 25mf", "unidad": "unidad"},
+    {"nombre": "Capacitor 20mf", "unidad": "unidad"},
+    {"nombre": "Ignitor ", "unidad": "unidad"},
+    {"nombre": "Cinta aisladora", "unidad": "unidad"},
+    {"nombre": "Guantes", "unidad": "unidad"},
+    
 ]
+
+
 
 @login_required
 def crear_orden(request):
