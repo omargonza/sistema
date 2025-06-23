@@ -1,5 +1,7 @@
-{% load static %} {% load form_tags %}
 
+
+
+{% load static %} {% load form_tags %}
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -175,36 +177,33 @@
             </button>
 
             <hr class="my-4" />
-
             <h5>Materiales Utilizados</h5>
-            {{ material_formset.management_form }}
-
-            <div id="material-forms">
-              {% for form in material_formset %}
+            <div id="materiales-container">
               <div class="row g-2 mb-2 material-form">
-                {% for field in form.visible_fields %}
-                <div class="col">
-                  {{ field }} {% if field.name == "material" %}
-                  <span class="unidad-material"></span>
-                  {% endif %}
+                <div class="col-md-6">
+                  <select name="material_nombre[]" class="form-select">
+                    <option value="">Seleccione un material</option>
+                    {% for mat in materiales_disponibles %}
+                    <option
+                      value="{{ mat.nombre }}"
+                      data-unidad="{{ mat.unidad }}"
+                    >
+                      {{ mat.nombre }}
+                    </option>
+                    {% endfor %}
+                  </select>
                 </div>
-                {% endfor %}
-              </div>
-              {% endfor %}
-            </div>
-
-            <!-- Formulario vacío oculto para clonar -->
-            <div id="empty-material-form" class="d-none">
-              <div class="row g-2 mb-2 material-form">
-                {% for field in material_formset.empty_form.visible_fields %}
-                <div class="col">
-                  {{ field }}
-                  <!-- Usa {{ field }}, no .as_widget -->
-                  {% if field.name == "material" %}
-                  <span class="unidad-material"></span>
-                  {% endif %}
+                <div class="col-md-3">
+                  <input
+                    type="number"
+                    name="material_cantidad[]"
+                    class="form-control"
+                    placeholder="Cantidad"
+                  />
                 </div>
-                {% endfor %}
+                <div class="col-md-3">
+                  <span class="unidad-material">-</span>
+                </div>
               </div>
             </div>
 
@@ -213,7 +212,7 @@
               class="btn btn-outline-secondary btn-sm"
               id="add-material"
             >
-              Agregar Otro Material
+              Agregar otro material
             </button>
 
             <hr class="my-4" />
@@ -279,6 +278,32 @@
           }
         });
       });
+    </script>
+
+    <script>
+      document.addEventListener("change", function (e) {
+        if (e.target.name === "material_nombre[]") {
+          const unidad = e.target.selectedOptions[0].dataset.unidad || "-";
+          const span = e.target
+            .closest(".material-form")
+            .querySelector(".unidad-material");
+          if (span) span.textContent = unidad;
+        }
+      });
+
+      document
+        .getElementById("add-material")
+        .addEventListener("click", function () {
+          const container = document.getElementById("materiales-container");
+          const first = container.querySelector(".material-form");
+          const clone = first.cloneNode(true);
+
+          clone.querySelectorAll("select, input").forEach((el) => {
+            el.value = "";
+          });
+          clone.querySelector(".unidad-material").textContent = "-";
+          container.appendChild(clone);
+        });
     </script>
 
     <script>

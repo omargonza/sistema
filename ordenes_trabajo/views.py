@@ -52,6 +52,14 @@ def registro(request):
         form = UserCreationForm()
     return render(request, 'ordenes_trabajo/registro.html', {'form': form})
 
+
+MATERIALES_DISPONIBLES = [
+    {"nombre": "Cable 4mm", "unidad": "m"},
+    {"nombre": "Tubo PVC 20mm", "unidad": "m"},
+    {"nombre": "Llave térmica", "unidad": "unidad"},
+    {"nombre": "Soporte metálico", "unidad": "pieza"},
+]
+
 @login_required
 def crear_orden(request):
     if request.method == 'POST':
@@ -67,32 +75,30 @@ def crear_orden(request):
             for nombre, legajo in zip(nombres, legajos)
             if nombre.strip() or legajo.strip()
         ]
+        
+        material_nombres = request.POST.getlist('material_nombre[]')
+        material_cantidades = request.POST.getlist('material_cantidad[]')
+        materiales_usados = [
+            {"nombre": nombre.strip(), "cantidad": cantidad.strip()}
+            for nombre, cantidad in zip(material_nombres, material_cantidades)
+            if nombre.strip() and cantidad.strip()
+        ]
 
-        if orden_form.is_valid() and material_formset.is_valid():
+        if orden_form.is_valid():
             orden = orden_form.save(commit=False)
             orden.tecnicos = json.dumps(lista_tecnicos, ensure_ascii=False)
-
+            context = {
+                'orden': orden,
+                'materiales_usados': materiales_usados,
+                'tecnicos': lista_tecnicos,
+            }
             if action == "descargar":
                 # Solo genera el PDF, sin guardar en la base
-                context = {
-                    'orden': orden,
-                    'materiales_usados': material_formset.cleaned_data,
-                    'tecnicos': lista_tecnicos,  # técnicos sin guardar aún
-                }
-            else:
+              
+            
                 # Guarda la orden y los materiales
-                orden.save()
-                materiales = material_formset.save(commit=False)
-                for material in materiales:
-                    material.orden_trabajo = orden
-                    material.save()
-                material_formset.save_m2m()
-
-                context = {
-                    'orden': orden,
-                    'materiales_usados': orden.materiales_usados.select_related('material'),
-                    'tecnicos': orden.get_tecnicos_json(),  # ahora desde el modelo
-                }
+              orden.save()
+               
 
             # Generar el PDF
             template_path = 'ordenes_trabajo/orden_pdf.html'
@@ -112,31 +118,24 @@ def crear_orden(request):
 
         else:
             # Formulario inválido: volver a mostrar con datos anteriores
-            materiales = Material.objects.all()
-            unidades = {str(m.id): m.unidad for m in materiales}
-            context = {
+        
+         context = {
                 'orden_form': orden_form,
-                'material_formset': material_formset,
-                'materiales': materiales,
-                'unidades': unidades,
-                'tecnicos': lista_tecnicos,  # vuelve a pasar los técnicos para mostrarlos de nuevo
+                'tecnicos': lista_tecnicos,
+                'materiales_disponibles': MATERIALES_DISPONIBLES,
             }
-            return render(request, 'ordenes_trabajo/crear_orden.html', context)
+        return render(request, 'ordenes_trabajo/crear_orden.html', context)
 
     else:
         # GET: mostrar formulario vacío
         orden_form = OrdenTrabajoForm()
-        material_formset = MaterialOrdenFormSet(queryset=MaterialOrden.objects.none())
-        materiales = Material.objects.all()
-        unidades = {str(m.id): m.unidad for m in materiales}
-
         context = {
             'orden_form': orden_form,
-            'material_formset': material_formset,
-            'materiales': materiales,
-            'unidades': unidades,
-            'tecnicos': [],  # lista vacía de técnicos al inicio
+            'tecnicos': [],
+            'materiales_disponibles': MATERIALES_DISPONIBLES,
         }
+       
+       
         return render(request, 'ordenes_trabajo/crear_orden.html', context)
 
 

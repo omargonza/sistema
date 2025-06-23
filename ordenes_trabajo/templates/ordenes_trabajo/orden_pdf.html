@@ -1,180 +1,90 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Orden de Trabajo #{{ orden.pk|default:"(no guardada)" }}</title>
-    <style>
-      body {
-        font-family: Helvetica, sans-serif;
-        font-size: 11pt;
-        margin: 40px;
-        padding: 0;
-        color: #333;
-      }
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      color: #000;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    header img {
+      width: 80px;
+      height: auto;
+      margin-right: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #999;
+      padding: 6px;
+      text-align: left;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
+    .seccion {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+  <img src="{{ logo_path }}" alt="Logo" />
 
-      h1,
-      h2,
-      h3 {
-        text-align: center;
-        margin: 0 0 10px;
-      }
+    <h1>Orden de Trabajo #{{ orden.pk }}</h1>
+  </header>
 
-      h1 {
-        font-size: 20pt;
-        border-bottom: 2px solid #444;
-        padding-bottom: 5px;
-        margin-bottom: 15px;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-        table-layout: fixed;
-      }
+  <div class="seccion">
+    <strong>Fecha:</strong> {{ orden.fecha }}<br />
+    <strong>Hora Inicio:</strong> {{ orden.horaInicio }}<br />
+    <strong>Hora Fin:</strong> {{ orden.horaFin }}<br />
+    <strong>Vehículo:</strong> {{ orden.vehiculo }}<br />
+    <strong>KM Inicial:</strong> {{ orden.kmInicial }}<br />
+    <strong>KM Final:</strong> {{ orden.kmFinal }}<br />
+    <strong>Tablero:</strong> {{ orden.tablero }}<br />
+    <strong>Circuito:</strong> {{ orden.circuito }}<br />
+    <strong>Zona:</strong> {{ orden.zona }}<br />
+    <strong>Tipo Mantenimiento:</strong> {{ orden.get_tipo_mantenimiento_display }}<br />
+    <strong>Descripción:</strong><br />
+    <pre>{{ orden.descripcion }}</pre>
+  </div>
 
-      th,
-      td {
-        border: 1px solid #999;
-        padding: 6px 8px;
-        vertical-align: top;
-        word-wrap: break-word;
-      }
+  <div class="seccion">
+    <h3>Técnicos</h3>
+    <ul>
+      {% for tecnico in tecnicos %}
+        <li>{{ tecnico.nombre }} ({{ tecnico.legajo }})</li>
+      {% endfor %}
+    </ul>
+  </div>
 
-      th {
-        background-color: #e0e6ed;
-        width: 35%;
-      }
-
-      td {
-        width: 65%;
-      }
-
-      .section-title {
-        margin-top: 30px;
-        margin-bottom: 10px;
-        font-size: 13pt;
-        border-bottom: 1px solid #ccc;
-        padding-bottom: 4px;
-      }
-
-      .descripcion {
-        white-space: pre-line;
-      }
-
-      .footer {
-        text-align: center;
-        margin-top: 40px;
-        font-size: 9pt;
-        color: #666;
-      }
-      .footer {
-        font-size: 9pt;
-        color: #999;
-      }
-      .footer a {
-        color: #1a73e8;
-        text-decoration: none;
-      }
-
-      .footer a:hover {
-        text-decoration: underline;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Orden de Trabajo</h1>
-    <h2>ID: {{ orden.pk|default:"(no guardada)" }}</h2>
-
-    <h3 class="section-title">Datos Generales</h3>
-    <table class="tabla-datos">
-      <tr>
-        <th>Fecha</th>
-        <td>{{ orden.fecha|date:"d/m/Y" }}</td>
-      </tr>
-      <tr>
-        <th>Hora Inicio</th>
-        <td>{{ orden.horaInicio }}</td>
-      </tr>
-      <tr>
-        <th>Hora Fin</th>
-        <td>{{ orden.horaFin }}</td>
-      </tr>
-      <tr>
-        <th>Vehículo</th>
-        <td>{{ orden.vehiculo }}</td>
-      </tr>
-      <tr>
-        <th>Tipo de Mantenimiento</th>
-        <td>{{ orden.tipo_mantenimiento|title }}</td>
-      </tr>
-      <tr>
-        <th>Kilometraje Inicial / Final</th>
-        <td>{{ orden.kmInicial }} / {{ orden.kmFinal }}</td>
-      </tr>
-      <tr>
-        <th>Zona / Circuito</th>
-        <td>{{ orden.zona }} / {{ orden.circuito }}</td>
-      </tr>
-      <tr>
-        <th>Descripción</th>
-        <td class="descripcion">{{ orden.descripcion|linebreaksbr }}</td>
-      </tr>
-    </table>
-
-    <h3 class="section-title">Técnicos</h3>
+  <div class="seccion">
+    <h3>Materiales Utilizados</h3>
     <table>
       <thead>
         <tr>
-          <th>Nombre</th>
-          <th>Legajo</th>
+          <th>Material</th>
+          <th>Cantidad</th>
         </tr>
       </thead>
       <tbody>
-        {% for tecnico in tecnicos %}
+        {% for mat in materiales_usados %}
         <tr>
-          <td>{{ tecnico.nombre }}</td>
-          <td>{{ tecnico.legajo }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="2" style="text-align: center">
-            No hay técnicos asignados
-          </td>
+          <td>{{ mat.nombre }}</td>
+          <td>{{ mat.cantidad }}</td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
-
-    <h3 class="section-title">Materiales Usados</h3>
-    <table>
-      <thead>
-        <tr>
-          <th style="width: 50%">Material</th>
-          <th style="width: 25%">Cantidad</th>
-          <th style="width: 25%">Unidad</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {% for item in materiales_usados %}
-        <tr>
-          <td>{{ item.material.nombre }}</td>
-          <td>{{ item.cantidad }}</td>
-          <td>{{ item.unidad }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="3" style="text-align: center">
-            No se usaron materiales
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
-    <div class="footer">
-      © {{ now|date:"Y" }} - Orden de trabajo -Mantenimiento electrico
-    </div>
-  </body>
+  </div>
+</body>
 </html>
