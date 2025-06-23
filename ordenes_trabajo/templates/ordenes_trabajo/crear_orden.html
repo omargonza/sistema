@@ -20,7 +20,7 @@
     />
     <link
       rel="stylesheet"
-      href="{% static 'C:/Users/Usuario/sistema_ordenes/static/css/styles-dark-elegante.css' %}?v=2"
+      href="{% static '/static/css/styles-dark-elegante.css' %}?v=2"
     />
     <link rel="manifest" href="{% static 'manifest.json' %}" />
     <meta name="theme-color" content="#0a0a0a" />
@@ -307,7 +307,7 @@
     </script>
 
     <script>
-  
+      document.addEventListener("DOMContentLoaded", function () {
 
         // Descargar PDF
         document.getElementById("btn-descargar-pdf").addEventListener("click", function (e) {
@@ -359,6 +359,7 @@
           select.addEventListener("change", () => actualizarUnidad(select));
           actualizarUnidad(select);
         });
+
       });
     </script>
   </body>
