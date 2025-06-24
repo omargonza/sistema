@@ -59,8 +59,7 @@
       </table>
       {% else %}
       <p>No se asignaron técnicos.</p>
-      {% if orden.materiales %} {% with materiales=orden.get_materiales_json %}
-      {% if materiales %}
+      {% if orden.materiales_usados.all %}
       <h2>Materiales Utilizados</h2>
       <table class="tabla-materiales">
         <thead>
@@ -71,16 +70,19 @@
           </tr>
         </thead>
         <tbody>
-          {% for material in materiales %}
+          {% for uso in orden.materiales_usados.all %}
           <tr>
-            <td>{{ material.nombre }}</td>
-            <td>{{ material.cantidad }}</td>
-            <td>{{ material.unidad }}</td>
+            <td>{{ uso.material.nombre }}</td>
+            <td>{{ uso.cantidad }}</td>
+            <td>{{ uso.material.unidad }}</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
       {% else %}
+      <p>No se ingresaron materiales.</p>
+      {% endif %}
+
       <p>No se ingresaron materiales.</p>
       {% endif %} {% endwith %} {% endif %}
 
