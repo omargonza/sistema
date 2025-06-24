@@ -228,7 +228,7 @@ def generar_pdf_orden(_, pk):
 
     context = {
         'orden': orden,
-        'materiales_usados': orden.materiales_usados.all(),
+        'materiales_disponibles': MATERIALES_DISPONIBLES,
         'tecnicos': orden.get_tecnicos_json(),  # ✅ Lista de técnicos decodificada del campo JSON
     }
 
